@@ -1,0 +1,8 @@
+An attempt to update [[https://steamcommunity.com/sharedfiles/filedetails/?id=3255627094][Greyscythe Bionics Catalogue]] for RimWorld 1.6 as
+the original author has stopped maintaining the mod (thank you for
+your work [[https://steamcommunity.com/id/feaurievlads][Feaurie V]]).
+
+[[file:permission1.png]]
+
+I claim no ownership or copyright over this code, all rights reserved
+by the original authors as mentioned above.
