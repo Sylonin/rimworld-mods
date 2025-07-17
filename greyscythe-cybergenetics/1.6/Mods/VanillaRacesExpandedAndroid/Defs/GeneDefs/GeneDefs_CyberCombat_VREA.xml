@@ -51,7 +51,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -98,7 +98,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -146,7 +146,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -195,7 +195,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -248,7 +248,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -303,7 +303,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -341,7 +341,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 				<hediffToWholeBody>GS_Hediff_Engine</hediffToWholeBody>
@@ -377,7 +377,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 				<hediffToWholeBody>GS_Hediff_EngineL</hediffToWholeBody>
@@ -414,7 +414,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -454,7 +454,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>

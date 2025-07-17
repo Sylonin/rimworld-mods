@@ -416,7 +416,8 @@ namespace GS_Core
             {
                 num2 = 1f - (num - 0.25f) / 0.6f;
             }
-            if (((MainTabWindow_Inspect)MainButtonDefOf.Inspect.TabWindow)?.LastMouseoverGizmo is Command_Ability command_Ability && gene.Max != 0f)
+            // https://github.com/Lennoxite/bte-mythic/blob/master/1.6/Source/BiotechExpansion_Mythic/GeneGizmo_ResourceReverence.cs#L32-L52
+            if (MapGizmoUtility.LastMouseOverGizmo is Command_Ability command_Ability && gene.Max != 0f)
             {
                 foreach (CompAbilityEffect effectComp in command_Ability.Ability.EffectComps)
                 {
@@ -438,6 +439,13 @@ namespace GS_Core
             return result;
         }
 
+        // thank you https://github.com/Lennoxite/bte-mythic/commit/34025f0a81215d80f6262990071e72e8f58025b0#diff-977e91f76f650a2585dcc67d7351955efa13df3c6bbc4265517f85487fa3f82bR54-R66
+        private static bool draggingBar;
+        protected override bool DraggingBar
+        {
+            get {return draggingBar;}
+            set {draggingBar = value;}
+        }
         protected override void DrawHeader(Rect labelRect, ref bool mouseOverAnyHighlightableElement)
         {
             if ((gene.pawn.IsColonistPlayerControlled || gene.pawn.IsPrisonerOfColony) && gene is Gene_Fuel gene_Fuel)
@@ -1157,8 +1165,8 @@ namespace GS_Core
         }
 
         public Boolean isActive()
-        { 
-            return active; 
+        {
+            return active;
         }
     }
 
@@ -1418,12 +1426,13 @@ namespace GS_Core
                 list.Add(parent.pawn);
             }
 
-            GenExplosion.DoExplosion(Pawn.Position, Pawn.MapHeld, Props.radius, Props.damageType, Pawn, Props.damageAmount, Props.damagePenetration, Props.soundCreated, null, null, null, Props.thingCreated, Props.thingCreatedChance, 1, Props.gasType, applyDamageToExplosionCellsNeighbors: false, null, 0f, 1, Props.chanceToStartFire, Props.damageFalloff, null, list);
+            // TODO: port the below
+            // GenExplosion.DoExplosion(Pawn.Position, Pawn.MapHeld, Props.radius, Props.damageType, Pawn, Props.damageAmount, Props.damagePenetration, Props.soundCreated, null, null, null, Props.thingCreated, Props.thingCreatedChance, 1, Props.gasType,  null, 0f, 1, Props.chanceToStartFire, Props.damageFalloff, null, list, applyDamageToExplosionCellsNeighbors: false);
             base.Apply(target, dest);
         }
 
         /**
-         
+
         public override IEnumerable<PreCastAction> GetPreCastActions()
         {
             yield return new PreCastAction
@@ -1494,7 +1503,7 @@ namespace GS_Core
                         {
                             return true;
                         }
-                        
+
                         if (GS_EvadeStatDefOf.GS_Evade_EvadeProjectileChance.Worker.IsDisabledFor(pawn))
                         {
                             return true;
@@ -1795,7 +1804,7 @@ namespace GS_Core
         }
 
         /**
-         
+
         public override IEnumerable<PreCastAction> GetPreCastActions()
         {
             yield return new PreCastAction

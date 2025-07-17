@@ -3,7 +3,7 @@
 	<GeneDef Name="GG_CyberGenes_Fuel" Abstract="True">
 		<displayCategory>GG_CybFuel</displayCategory>
 	</GeneDef>
-	
+
 	<GeneDef ParentName="GG_CyberGenes_Fuel">
 		<defName>GS_Powered</defName>
 		<label>Fuel Powered</label>
@@ -43,15 +43,15 @@
 		<resourceLossPerDay>0</resourceLossPerDay>
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>0</biostatMet>
-		
+
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
 		</modExtensions>
 	</GeneDef>
-	
+
 	<GeneDef ParentName="GG_CyberGenes_Fuel">
 		<defName>GS_Powered_Charge</defName>
 		<label>Synaptic Accelerator</label>
@@ -72,13 +72,13 @@
 		<biostatCpx>3</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
 		</modExtensions>
 	</GeneDef>
-	
+
 	<GeneDef ParentName="GG_CyberGenes_Fuel">
 		<defName>GS_Powered_Overdrive</defName>
 		<label>Cybernetic Overcharger</label>
@@ -99,13 +99,13 @@
 		<biostatCpx>3</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
 		</modExtensions>
 	</GeneDef>
-	
+
 	<GeneDef ParentName="GG_CyberGenes_Fuel">
 		<defName>GS_Powered_Guardian</defName>
 		<label>Guardian Protocols</label>
@@ -126,7 +126,7 @@
 		<biostatCpx>3</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -153,13 +153,13 @@
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
 		</modExtensions>
 	</GeneDef>
-	
+
 	<GeneDef ParentName="GG_CyberGenes_Fuel">
 		<defName>GS_Powered_VentTox</defName>
 		<label>Tox Vent</label>
@@ -180,13 +180,13 @@
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
 		</modExtensions>
 	</GeneDef>
-	
+
 	<GeneDef ParentName="GG_CyberGenes_Fuel">
 		<defName>GS_Powered_VentEMP</defName>
 		<label>EMP Discharge</label>
@@ -207,7 +207,7 @@
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -234,7 +234,7 @@
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>

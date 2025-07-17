@@ -44,7 +44,7 @@
 		<biostatMet>0</biostatMet>
 		
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -71,7 +71,7 @@
 		<biostatCpx>3</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -98,7 +98,7 @@
 		<biostatCpx>3</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -125,7 +125,7 @@
 		<biostatCpx>3</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -152,7 +152,7 @@
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -179,7 +179,7 @@
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -206,7 +206,7 @@
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>
@@ -233,7 +233,7 @@
 		<biostatCpx>1</biostatCpx>
 		<biostatMet>-1</biostatMet>
 		<modExtensions Inherit="False">
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
 			</li>

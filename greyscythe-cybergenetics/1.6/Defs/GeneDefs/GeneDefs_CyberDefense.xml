@@ -51,7 +51,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -80,7 +80,7 @@
 
 		<selectionWeight>0</selectionWeight>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -110,7 +110,7 @@
 
 		<selectionWeight>0</selectionWeight>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -141,7 +141,7 @@
 
 		<selectionWeight>0</selectionWeight>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -167,7 +167,7 @@
 
 		<selectionWeight>0</selectionWeight>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -199,7 +199,7 @@
 
 		<selectionWeight>0</selectionWeight>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -220,7 +220,7 @@
 
 		<selectionWeight>0</selectionWeight>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 				<hediffToWholeBody>GS_Hediff_SelfRepair</hediffToWholeBody>
@@ -245,7 +245,7 @@
 
 		<selectionWeight>0</selectionWeight>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -291,7 +291,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -333,7 +333,7 @@
 		</symbolPack>
 		<selectionWeight>0</selectionWeight>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>

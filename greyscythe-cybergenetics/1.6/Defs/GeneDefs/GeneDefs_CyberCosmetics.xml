@@ -26,7 +26,7 @@
 			</li>
 		</renderNodeProperties>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -58,7 +58,7 @@
 			</li>
 		</renderNodeProperties>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
@@ -124,7 +124,7 @@
 			</li>
 		</renderNodeProperties>
 		<modExtensions>
-			<li Class="VanillaGenesExpanded.GeneExtension">
+			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathEndogenes>UI/Icons/Genes/GG_Endogenes</backgroundPathEndogenes>
 				<backgroundPathXenogenes>UI/Icons/Genes/GG_Xenogenes</backgroundPathXenogenes>
 			</li>
