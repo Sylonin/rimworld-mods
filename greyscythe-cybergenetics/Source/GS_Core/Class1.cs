@@ -1,12 +1,12 @@
-using RimWorld;
 using System;
 using System.Collections.Generic;
-using HarmonyLib;
-using Verse;
-using UnityEngine;
 using System.Linq;
-using Verse.Sound;
+using HarmonyLib;
+using RimWorld;
+using UnityEngine;
+using Verse;
 using Verse.AI;
+using Verse.Sound;
 using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace GS_Core
@@ -14,7 +14,6 @@ namespace GS_Core
     /// <summary>
     ///     **Fuel system
     /// </summary>
-
     [StaticConstructorOnStartup]
     public static class FuelUtility
     {
@@ -97,7 +96,7 @@ namespace GS_Core
                     action = delegate
                     {
                         OffsetResource(drain, -0.1f);
-                    }
+                    },
                 };
                 yield return new Command_Action
                 {
@@ -105,7 +104,7 @@ namespace GS_Core
                     action = delegate
                     {
                         OffsetResource(drain, 0.1f);
-                    }
+                    },
                 };
             }
         }
@@ -225,13 +224,20 @@ namespace GS_Core
         private float TotalFuelCostOfQueuedAbilities()
         {
             object obj = parent.pawn.jobs?.curJob?.verbToUse;
-            float num = ((obj is Verb_CastAbility { ability: var ability }) ? ((ability != null) ? FuelUtility.FuelCost(ability) : 0f) : 0f);
+            float num = (
+                (obj is Verb_CastAbility { ability: var ability })
+                    ? ((ability != null) ? FuelUtility.FuelCost(ability) : 0f)
+                    : 0f
+            );
             float num2 = num;
             if (parent.pawn.jobs != null)
             {
                 for (int i = 0; i < parent.pawn.jobs.jobQueue.Count; i++)
                 {
-                    if (parent.pawn.jobs.jobQueue[i].job.verbToUse is Verb_CastAbility verb_CastAbility2)
+                    if (
+                        parent.pawn.jobs.jobQueue[i].job.verbToUse
+                        is Verb_CastAbility verb_CastAbility2
+                    )
                     {
                         float num3 = num2;
                         Ability ability2 = verb_CastAbility2.ability;
@@ -392,18 +398,28 @@ namespace GS_Core
     [StaticConstructorOnStartup]
     public class GeneGizmo_ResourceFuel : GeneGizmo_Resource
     {
-        private static readonly Texture2D FuelCostTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.9f, 0.9f));
+        private static readonly Texture2D FuelCostTex = SolidColorMaterials.NewSolidColorTexture(
+            new Color(0.2f, 0.9f, 0.9f)
+        );
 
         private const float TotalPulsateTime = 0.85f;
 
-        private List<Pair<IGeneResourceDrain, float>> tmpDrainGenes = new List<Pair<IGeneResourceDrain, float>>();
+        private List<Pair<IGeneResourceDrain, float>> tmpDrainGenes =
+            new List<Pair<IGeneResourceDrain, float>>();
 
-        public GeneGizmo_ResourceFuel(Gene_Resource gene, List<IGeneResourceDrain> drainGenes, Color barColor, Color barhighlightColor)
-            : base(gene, drainGenes, barColor, barhighlightColor)
-        {
-        }
+        public GeneGizmo_ResourceFuel(
+            Gene_Resource gene,
+            List<IGeneResourceDrain> drainGenes,
+            Color barColor,
+            Color barhighlightColor
+        )
+            : base(gene, drainGenes, barColor, barhighlightColor) { }
 
-        public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms)
+        public override GizmoResult GizmoOnGUI(
+            Vector2 topLeft,
+            float maxWidth,
+            GizmoRenderParms parms
+        )
         {
             GizmoResult result = base.GizmoOnGUI(topLeft, maxWidth, parms);
             float num = Mathf.Repeat(Time.time, 0.85f);
@@ -417,17 +433,26 @@ namespace GS_Core
                 num2 = 1f - (num - 0.25f) / 0.6f;
             }
             // https://github.com/Lennoxite/bte-mythic/blob/master/1.6/Source/BiotechExpansion_Mythic/GeneGizmo_ResourceReverence.cs#L32-L52
-            if (MapGizmoUtility.LastMouseOverGizmo is Command_Ability command_Ability && gene.Max != 0f)
+            if (
+                MapGizmoUtility.LastMouseOverGizmo is Command_Ability command_Ability
+                && gene.Max != 0f
+            )
             {
                 foreach (CompAbilityEffect effectComp in command_Ability.Ability.EffectComps)
                 {
-                    if (effectComp is CompAbilityEffect_FuelCost compAbilityEffect_FuelCost && compAbilityEffect_FuelCost.Props.FuelCost > float.Epsilon)
+                    if (
+                        effectComp is CompAbilityEffect_FuelCost compAbilityEffect_FuelCost
+                        && compAbilityEffect_FuelCost.Props.FuelCost > float.Epsilon
+                    )
                     {
                         Rect rect = barRect.ContractedBy(3f);
                         float width = rect.width;
                         float num3 = gene.Value / gene.Max;
                         rect.xMax = rect.xMin + width * num3;
-                        float num4 = Mathf.Min(compAbilityEffect_FuelCost.Props.FuelCost / gene.Max, 1f);
+                        float num4 = Mathf.Min(
+                            compAbilityEffect_FuelCost.Props.FuelCost / gene.Max,
+                            1f
+                        );
                         rect.xMin = Mathf.Max(rect.xMin, rect.xMax - width * num4);
                         GUI.color = new Color(1f, 1f, 1f, num2 * 0.7f);
                         GenUI.DrawTextureWithMaterial(rect, FuelCostTex, null);
@@ -443,17 +468,27 @@ namespace GS_Core
         private static bool draggingBar;
         protected override bool DraggingBar
         {
-            get {return draggingBar;}
-            set {draggingBar = value;}
+            get { return draggingBar; }
+            set { draggingBar = value; }
         }
-        protected override void DrawHeader(Rect labelRect, ref bool mouseOverAnyHighlightableElement)
+
+        protected override void DrawHeader(
+            Rect labelRect,
+            ref bool mouseOverAnyHighlightableElement
+        )
         {
-            if ((gene.pawn.IsColonistPlayerControlled || gene.pawn.IsPrisonerOfColony) && gene is Gene_Fuel gene_Fuel)
+            if (
+                (gene.pawn.IsColonistPlayerControlled || gene.pawn.IsPrisonerOfColony)
+                && gene is Gene_Fuel gene_Fuel
+            )
             {
                 labelRect.xMax -= 24f;
                 Rect rect = new Rect(labelRect.xMax, labelRect.y, 24f, 24f);
                 Widgets.DefIcon(rect, GS_ThingDefOf.GS_Fuel);
-                GUI.DrawTexture(new Rect(rect.center.x, rect.y, rect.width / 2f, rect.height / 2f), gene_Fuel.FuelAllowed ? Widgets.CheckboxOnTex : Widgets.CheckboxOffTex);
+                GUI.DrawTexture(
+                    new Rect(rect.center.x, rect.y, rect.width / 2f, rect.height / 2f),
+                    gene_Fuel.FuelAllowed ? Widgets.CheckboxOnTex : Widgets.CheckboxOffTex
+                );
                 if (Widgets.ButtonInvisible(rect))
                 {
                     gene_Fuel.FuelAllowed = !gene_Fuel.FuelAllowed;
@@ -470,7 +505,11 @@ namespace GS_Core
                 {
                     Widgets.DrawHighlight(rect);
                     string onOff = (gene_Fuel.FuelAllowed ? "On" : "Off");
-                    TooltipHandler.TipRegion(rect, () => "Pawn will consume Fuel material: " + onOff, 828267373);
+                    TooltipHandler.TipRegion(
+                        rect,
+                        () => "Pawn will consume Fuel material: " + onOff,
+                        828267373
+                    );
                     mouseOverAnyHighlightableElement = true;
                 }
             }
@@ -480,10 +519,15 @@ namespace GS_Core
         protected override string GetTooltip()
         {
             tmpDrainGenes.Clear();
-            string text = $"{gene.ResourceLabel.CapitalizeFirst().Colorize(ColoredText.TipSectionTitleColor)}: {gene.ValueForDisplay} / {gene.MaxForDisplay}\n";
+            string text =
+                $"{gene.ResourceLabel.CapitalizeFirst().Colorize(ColoredText.TipSectionTitleColor)}: {gene.ValueForDisplay} / {gene.MaxForDisplay}\n";
             if (gene.pawn.IsColonistPlayerControlled || gene.pawn.IsPrisonerOfColony)
             {
-                text = ((!(gene.targetValue <= 0f)) ? (text + "Consume Fuel Below: " + gene.PostProcessValue(gene.targetValue)) : (text + "Never Consume Fuel".ToString()));
+                text = (
+                    (!(gene.targetValue <= 0f))
+                        ? (text + "Consume Fuel Below: " + gene.PostProcessValue(gene.targetValue))
+                        : (text + "Never Consume Fuel".ToString())
+                );
             }
             if (!drainGenes.NullOrEmpty())
             {
@@ -492,23 +536,48 @@ namespace GS_Core
                 {
                     if (drainGene.CanOffset)
                     {
-                        tmpDrainGenes.Add(new Pair<IGeneResourceDrain, float>(drainGene, drainGene.ResourceLossPerDay));
+                        tmpDrainGenes.Add(
+                            new Pair<IGeneResourceDrain, float>(
+                                drainGene,
+                                drainGene.ResourceLossPerDay
+                            )
+                        );
                         num += drainGene.ResourceLossPerDay;
                     }
                 }
                 if (num != 0f)
                 {
-                    string text2 = ((num < 0f) ? "RegenerationRate".Translate() : "DrainRate".Translate());
-                    text = text + "\n\n" + text2 + ": " + "PerDay".Translate(Mathf.Abs(gene.PostProcessValue(num))).Resolve();
+                    string text2 = (
+                        (num < 0f) ? "RegenerationRate".Translate() : "DrainRate".Translate()
+                    );
+                    text =
+                        text
+                        + "\n\n"
+                        + text2
+                        + ": "
+                        + "PerDay".Translate(Mathf.Abs(gene.PostProcessValue(num))).Resolve();
                     foreach (Pair<IGeneResourceDrain, float> tmpDrainGene in tmpDrainGenes)
                     {
-                        text = text + "\n  - " + tmpDrainGene.First.DisplayLabel.CapitalizeFirst() + ": " + "PerDay".Translate(gene.PostProcessValue(0f - tmpDrainGene.Second).ToStringWithSign()).Resolve();
+                        text =
+                            text
+                            + "\n  - "
+                            + tmpDrainGene.First.DisplayLabel.CapitalizeFirst()
+                            + ": "
+                            + "PerDay"
+                                .Translate(
+                                    gene.PostProcessValue(0f - tmpDrainGene.Second)
+                                        .ToStringWithSign()
+                                )
+                                .Resolve();
                     }
                 }
             }
             if (!gene.def.resourceDescription.NullOrEmpty())
             {
-                text = text + "\n\n" + gene.def.resourceDescription.Formatted(gene.pawn.Named("PAWN")).Resolve();
+                text =
+                    text
+                    + "\n\n"
+                    + gene.def.resourceDescription.Formatted(gene.pawn.Named("PAWN")).Resolve();
             }
             return text;
         }
@@ -518,9 +587,11 @@ namespace GS_Core
     {
         private Gene_Fuel cachedFuelGene;
 
-        public HediffCompProperties_SeverityFromFuel Props => (HediffCompProperties_SeverityFromFuel)props;
+        public HediffCompProperties_SeverityFromFuel Props =>
+            (HediffCompProperties_SeverityFromFuel)props;
 
-        public override bool CompShouldRemove => base.Pawn.genes?.GetFirstGeneOfType<Gene_Fuel>() == null;
+        public override bool CompShouldRemove =>
+            base.Pawn.genes?.GetFirstGeneOfType<Gene_Fuel>() == null;
 
         private Gene_Fuel Fuel
         {
@@ -537,7 +608,9 @@ namespace GS_Core
         public override void CompPostTick(ref float severityAdjustment)
         {
             base.CompPostTick(ref severityAdjustment);
-            severityAdjustment += ((Fuel.Value > 0f) ? Props.severityPerHourFuel : Props.severityPerHourEmpty) / 2500f;
+            severityAdjustment +=
+                ((Fuel.Value > 0f) ? Props.severityPerHourFuel : Props.severityPerHourEmpty)
+                / 2500f;
         }
     }
 
@@ -564,7 +637,14 @@ namespace GS_Core
 
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats(ThingDef parentDef)
         {
-            yield return new StatDrawEntry(valueString: ((offset >= 0f) ? "+" : string.Empty) + Mathf.RoundToInt(offset * 100f), category: StatCategoryDefOf.BasicsNonPawnImportant, label: "Fuel", reportText: "Amount of Fuel this restores.", displayPriorityWithinCategory: 1000);
+            yield return new StatDrawEntry(
+                valueString: ((offset >= 0f) ? "+" : string.Empty)
+                    + Mathf.RoundToInt(offset * 100f),
+                category: StatCategoryDefOf.BasicsNonPawnImportant,
+                label: "Fuel",
+                reportText: "Amount of Fuel this restores.",
+                displayPriorityWithinCategory: 1000
+            );
         }
     }
 
@@ -584,8 +664,15 @@ namespace GS_Core
                     }
                     else
                     {
-                        object obj = GS_ThingDefOf.GS_Fuel.ingestible?.outcomeDoers?.FirstOrDefault((IngestionOutcomeDoer x) => x is IngestionOutcomeDoer_OffsetFuel);
-                        if (!(obj is IngestionOutcomeDoer_OffsetFuel ingestionOutcomeDoer_OffsetFuel))
+                        object obj = GS_ThingDefOf.GS_Fuel.ingestible?.outcomeDoers?.FirstOrDefault(
+                            (IngestionOutcomeDoer x) => x is IngestionOutcomeDoer_OffsetFuel
+                        );
+                        if (
+                            !(
+                                obj
+                                is IngestionOutcomeDoer_OffsetFuel ingestionOutcomeDoer_OffsetFuel
+                            )
+                        )
                         {
                             cachedFuelPackFuelGain = 0f;
                         }
@@ -638,7 +725,10 @@ namespace GS_Core
                 if (FuelPack != null)
                 {
                     Job job = JobMaker.MakeJob(JobDefOf.Ingest, FuelPack);
-                    job.count = Mathf.Min(FuelPack.stackCount, Mathf.FloorToInt((gene_Fuel.Max - gene_Fuel.Value) / FuelPackFuelGain));
+                    job.count = Mathf.Min(
+                        FuelPack.stackCount,
+                        Mathf.FloorToInt((gene_Fuel.Max - gene_Fuel.Value) / FuelPackFuelGain)
+                    );
                     return job;
                 }
             }
@@ -659,7 +749,15 @@ namespace GS_Core
                     return pawn.inventory.innerContainer[i];
                 }
             }
-            return GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, pawn.Map.listerThings.ThingsOfDef(GS_ThingDefOf.GS_Fuel), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing t) => pawn.CanReserve(t) && !t.IsForbidden(pawn));
+            return GenClosest.ClosestThing_Global_Reachable(
+                pawn.Position,
+                pawn.Map,
+                pawn.Map.listerThings.ThingsOfDef(GS_ThingDefOf.GS_Fuel),
+                PathEndMode.OnCell,
+                TraverseParms.For(pawn),
+                9999f,
+                (Thing t) => pawn.CanReserve(t) && !t.IsForbidden(pawn)
+            );
         }
     }
 
@@ -672,14 +770,20 @@ namespace GS_Core
 
         public override bool AvailableOnNow(Thing thing, BodyPartRecord part = null)
         {
-            return thing.MapHeld != null && thing.MapHeld.listerThings.ThingsOfDef(GS_ThingDefOf.GS_Fuel).Count != 0 && base.AvailableOnNow(thing, part);
+            return thing.MapHeld != null
+                && thing.MapHeld.listerThings.ThingsOfDef(GS_ThingDefOf.GS_Fuel).Count != 0
+                && base.AvailableOnNow(thing, part);
         }
 
-        public override void ConsumeIngredient(Thing ingredient, RecipeDef recipe, Map map)
-        {
-        }
+        public override void ConsumeIngredient(Thing ingredient, RecipeDef recipe, Map map) { }
 
-        public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer, List<Thing> ingredients, Bill bill)
+        public override void ApplyOnPawn(
+            Pawn pawn,
+            BodyPartRecord part,
+            Pawn billDoer,
+            List<Thing> ingredients,
+            Bill bill
+        )
         {
             if (!ModsConfig.BiotechActive)
             {
@@ -715,7 +819,8 @@ namespace GS_Core
 
         private const float FuelPctMax = 0.95f;
 
-        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
+        public override ThingRequest PotentialWorkThingRequest =>
+            ThingRequest.ForGroup(ThingRequestGroup.Pawn);
 
         public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
 
@@ -760,7 +865,17 @@ namespace GS_Core
             {
                 return false;
             }
-            if (GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(GS_ThingDefOf.GS_Fuel), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing pack) => !pack.IsForbidden(pawn) && pawn.CanReserve(pack)) == null)
+            if (
+                GenClosest.ClosestThingReachable(
+                    pawn.Position,
+                    pawn.Map,
+                    ThingRequest.ForDef(GS_ThingDefOf.GS_Fuel),
+                    PathEndMode.OnCell,
+                    TraverseParms.For(pawn),
+                    9999f,
+                    (Thing pack) => !pack.IsForbidden(pawn) && pawn.CanReserve(pack)
+                ) == null
+            )
             {
                 JobFailReason.Is("No Fuel.");
                 return false;
@@ -771,7 +886,15 @@ namespace GS_Core
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             Pawn pawn2 = (Pawn)t;
-            Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(GS_ThingDefOf.GS_Fuel), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing pack) => !pack.IsForbidden(pawn) && pawn.CanReserve(pack));
+            Thing thing = GenClosest.ClosestThingReachable(
+                pawn.Position,
+                pawn.Map,
+                ThingRequest.ForDef(GS_ThingDefOf.GS_Fuel),
+                PathEndMode.OnCell,
+                TraverseParms.For(pawn),
+                9999f,
+                (Thing pack) => !pack.IsForbidden(pawn) && pawn.CanReserve(pack)
+            );
             if (thing != null)
             {
                 Job job = JobMaker.MakeJob(JobDefOf.FeedPatient, thing, pawn2);
@@ -819,7 +942,18 @@ namespace GS_Core
             {
                 return null;
             }
-            Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(GS_ThingDefOf.GS_Fuel), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, (Thing pack) => !pack.IsForbidden(pawn) && pawn.CanReserve(pack) && pack.GetRoom() != prisoner.GetRoom());
+            Thing thing = GenClosest.ClosestThingReachable(
+                pawn.Position,
+                pawn.Map,
+                ThingRequest.ForDef(GS_ThingDefOf.GS_Fuel),
+                PathEndMode.OnCell,
+                TraverseParms.For(pawn),
+                9999f,
+                (Thing pack) =>
+                    !pack.IsForbidden(pawn)
+                    && pawn.CanReserve(pack)
+                    && pack.GetRoom() != prisoner.GetRoom()
+            );
             if (thing == null)
             {
                 return null;
@@ -859,7 +993,9 @@ namespace GS_Core
     [StaticConstructorOnStartup]
     public class CommandAbilityToggle : Command_Toggle
     {
-        public static readonly Texture2D CooldownTex = SolidColorMaterials.NewSolidColorTexture(new Color(1f, 1f, 1f, 0.1f));
+        public static readonly Texture2D CooldownTex = SolidColorMaterials.NewSolidColorTexture(
+            new Color(1f, 1f, 1f, 0.1f)
+        );
 
         public Ability ability;
 
@@ -884,7 +1020,12 @@ namespace GS_Core
             int min = ability.def.cooldownTicksRange.min;
             if (disabled && min > Find.TickManager.TicksGame)
             {
-                GUI.DrawTexture(butRect.RightPartPixels(butRect.width * ((float)ability.CooldownTicksRemaining / (float)min)), CooldownTex);
+                GUI.DrawTexture(
+                    butRect.RightPartPixels(
+                        butRect.width * ((float)ability.CooldownTicksRemaining / (float)min)
+                    ),
+                    CooldownTex
+                );
             }
             return result;
         }
@@ -912,9 +1053,7 @@ namespace GS_Core
         }
 
         public Ability_ChargeBoost(Pawn pawn)
-            : base(pawn)
-        {
-        }
+            : base(pawn) { }
 
         public Ability_ChargeBoost(Pawn pawn, AbilityDef def)
             : base(pawn, def)
@@ -936,7 +1075,7 @@ namespace GS_Core
                         Activate(pawn, LocalTargetInfo.Invalid);
                     },
                     isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_ChargeBoost")
+                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_ChargeBoost"),
                 };
             }
             else
@@ -950,7 +1089,7 @@ namespace GS_Core
                         Activate(pawn, LocalTargetInfo.Invalid);
                     },
                     isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_ChargeBoost")
+                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_ChargeBoost"),
                 };
             }
         }
@@ -990,14 +1129,18 @@ namespace GS_Core
             }
             if (active)
             {
-                Hediff_ChargeBoost hediff_ChargeBoost = HediffMaker.MakeHediff(GS_HediffDefOf.GS_ChargeBoostHediff, pawn) as Hediff_ChargeBoost;
+                Hediff_ChargeBoost hediff_ChargeBoost =
+                    HediffMaker.MakeHediff(GS_HediffDefOf.GS_ChargeBoostHediff, pawn)
+                    as Hediff_ChargeBoost;
                 hediff_ChargeBoost.ability = this;
                 hediff_ChargeBoost.gene = Gene;
                 pawn.health.AddHediff(hediff_ChargeBoost);
             }
             else
             {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(GS_HediffDefOf.GS_ChargeBoostHediff);
+                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(
+                    GS_HediffDefOf.GS_ChargeBoostHediff
+                );
                 if (firstHediffOfDef != null)
                 {
                     pawn.health.RemoveHediff(firstHediffOfDef);
@@ -1026,16 +1169,19 @@ namespace GS_Core
                 }
                 return cacheGene;
             }
-            set
-            {
-                cacheGene = value;
-            }
+            set { cacheGene = value; }
         }
 
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             base.Notify_PawnPostApplyDamage(dinfo, totalDamageDealt);
-            if (!dinfo.IgnoreArmor && (dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Blunt || dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Sharp))
+            if (
+                !dinfo.IgnoreArmor
+                && (
+                    dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Blunt
+                    || dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Sharp
+                )
+            )
             {
                 float num = Mathf.Clamp(totalDamageDealt / 5f / 100f, 0.005f, 0.03f);
                 gene.Value -= num;
@@ -1071,9 +1217,7 @@ namespace GS_Core
         }
 
         public Ability_Overdrive(Pawn pawn)
-            : base(pawn)
-        {
-        }
+            : base(pawn) { }
 
         public Ability_Overdrive(Pawn pawn, AbilityDef def)
             : base(pawn, def)
@@ -1095,7 +1239,7 @@ namespace GS_Core
                         Activate(pawn, LocalTargetInfo.Invalid);
                     },
                     isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Overdrive")
+                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Overdrive"),
                 };
             }
             else
@@ -1109,7 +1253,7 @@ namespace GS_Core
                         Activate(pawn, LocalTargetInfo.Invalid);
                     },
                     isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Overdrive")
+                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Overdrive"),
                 };
             }
         }
@@ -1149,14 +1293,18 @@ namespace GS_Core
             }
             if (active)
             {
-                Hediff_Overdrive hediff_Overdrive = HediffMaker.MakeHediff(GS_HediffDefOf.GS_OverdriveHediff, pawn) as Hediff_Overdrive;
+                Hediff_Overdrive hediff_Overdrive =
+                    HediffMaker.MakeHediff(GS_HediffDefOf.GS_OverdriveHediff, pawn)
+                    as Hediff_Overdrive;
                 hediff_Overdrive.ability = this;
                 hediff_Overdrive.gene = Gene;
                 pawn.health.AddHediff(hediff_Overdrive);
             }
             else
             {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(GS_HediffDefOf.GS_OverdriveHediff);
+                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(
+                    GS_HediffDefOf.GS_OverdriveHediff
+                );
                 if (firstHediffOfDef != null)
                 {
                     pawn.health.RemoveHediff(firstHediffOfDef);
@@ -1169,7 +1317,6 @@ namespace GS_Core
             return active;
         }
     }
-
 
     public class Hediff_Overdrive : HediffWithComps
     {
@@ -1191,16 +1338,19 @@ namespace GS_Core
                 }
                 return cacheGene;
             }
-            set
-            {
-                cacheGene = value;
-            }
+            set { cacheGene = value; }
         }
 
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             base.Notify_PawnPostApplyDamage(dinfo, totalDamageDealt);
-            if (!dinfo.IgnoreArmor && (dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Blunt || dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Sharp))
+            if (
+                !dinfo.IgnoreArmor
+                && (
+                    dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Blunt
+                    || dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Sharp
+                )
+            )
             {
                 float num = Mathf.Clamp(totalDamageDealt / 5f / 100f, 0.005f, 0.03f);
                 gene.Value -= num;
@@ -1236,9 +1386,7 @@ namespace GS_Core
         }
 
         public Ability_Guardian(Pawn pawn)
-            : base(pawn)
-        {
-        }
+            : base(pawn) { }
 
         public Ability_Guardian(Pawn pawn, AbilityDef def)
             : base(pawn, def)
@@ -1260,7 +1408,7 @@ namespace GS_Core
                         Activate(pawn, LocalTargetInfo.Invalid);
                     },
                     isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Guardian")
+                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Guardian"),
                 };
             }
             else
@@ -1274,7 +1422,7 @@ namespace GS_Core
                         Activate(pawn, LocalTargetInfo.Invalid);
                     },
                     isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Guardian")
+                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Guardian"),
                 };
             }
         }
@@ -1314,14 +1462,18 @@ namespace GS_Core
             }
             if (active)
             {
-                Hediff_Guardian hediff_Guardian = HediffMaker.MakeHediff(GS_HediffDefOf.GS_GuardianHediff, pawn) as Hediff_Guardian;
+                Hediff_Guardian hediff_Guardian =
+                    HediffMaker.MakeHediff(GS_HediffDefOf.GS_GuardianHediff, pawn)
+                    as Hediff_Guardian;
                 hediff_Guardian.ability = this;
                 hediff_Guardian.gene = Gene;
                 pawn.health.AddHediff(hediff_Guardian);
             }
             else
             {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(GS_HediffDefOf.GS_GuardianHediff);
+                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(
+                    GS_HediffDefOf.GS_GuardianHediff
+                );
                 if (firstHediffOfDef != null)
                 {
                     pawn.health.RemoveHediff(firstHediffOfDef);
@@ -1334,7 +1486,6 @@ namespace GS_Core
             return active;
         }
     }
-
 
     public class Hediff_Guardian : HediffWithComps
     {
@@ -1356,16 +1507,19 @@ namespace GS_Core
                 }
                 return cacheGene;
             }
-            set
-            {
-                cacheGene = value;
-            }
+            set { cacheGene = value; }
         }
 
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             base.Notify_PawnPostApplyDamage(dinfo, totalDamageDealt);
-            if (!dinfo.IgnoreArmor && (dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Blunt || dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Sharp))
+            if (
+                !dinfo.IgnoreArmor
+                && (
+                    dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Blunt
+                    || dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Sharp
+                )
+            )
             {
                 float num = Mathf.Clamp(totalDamageDealt / 5f / 100f, 0.005f, 0.03f);
                 gene.Value -= num;
@@ -1474,10 +1628,17 @@ namespace GS_Core
         {
             Harmony harmony = new Harmony("feaurie.GS_Core");
             Type typeFromHandle = typeof(Pawn);
-            harmony.Patch(typeFromHandle.GetMethod("PreApplyDamage"), new HarmonyMethod(typeof(HarmonyPatches).GetMethod("Patch_Pawn_PreApplyDamage")));
+            harmony.Patch(
+                typeFromHandle.GetMethod("PreApplyDamage"),
+                new HarmonyMethod(typeof(HarmonyPatches).GetMethod("Patch_Pawn_PreApplyDamage"))
+            );
         }
 
-        public static bool Patch_Pawn_PreApplyDamage(ref Pawn __instance, ref DamageInfo dinfo, out bool absorbed)
+        public static bool Patch_Pawn_PreApplyDamage(
+            ref Pawn __instance,
+            ref DamageInfo dinfo,
+            out bool absorbed
+        )
         {
             absorbed = false;
             try
@@ -1488,7 +1649,17 @@ namespace GS_Core
                 }
 
                 Pawn pawn = __instance;
-                if (pawn.Downed || pawn.InBed() || pawn.IsBurning() || (pawn.stances?.stunner?.Stunned).GetValueOrDefault() || (!pawn.Drafted && !(pawn.stances?.curStance is Stance_Busy) && !(pawn.stances?.curStance is Stance_Warmup)))
+                if (
+                    pawn.Downed
+                    || pawn.InBed()
+                    || pawn.IsBurning()
+                    || (pawn.stances?.stunner?.Stunned).GetValueOrDefault()
+                    || (
+                        !pawn.Drafted
+                        && !(pawn.stances?.curStance is Stance_Busy)
+                        && !(pawn.stances?.curStance is Stance_Warmup)
+                    )
+                )
                 {
                     return true;
                 }
@@ -1504,12 +1675,18 @@ namespace GS_Core
                             return true;
                         }
 
-                        if (GS_EvadeStatDefOf.GS_Evade_EvadeProjectileChance.Worker.IsDisabledFor(pawn))
+                        if (
+                            GS_EvadeStatDefOf.GS_Evade_EvadeProjectileChance.Worker.IsDisabledFor(
+                                pawn
+                            )
+                        )
                         {
                             return true;
                         }
 
-                        float statValue = pawn.GetStatValue(GS_EvadeStatDefOf.GS_Evade_EvadeProjectileChance);
+                        float statValue = pawn.GetStatValue(
+                            GS_EvadeStatDefOf.GS_Evade_EvadeProjectileChance
+                        );
                         if (!(statValue > 0f))
                         {
                             return true;
@@ -1522,8 +1699,15 @@ namespace GS_Core
                         {
                             num = pawn2.skills.GetSkill(SkillDefOf.Shooting)?.Level ?? 0;
                         }
-                        float num2 = Mathf.Clamp((float)numStat / num, GS_EvadeModSettings.Instance.MinEvadeMagnitude, GS_EvadeModSettings.Instance.MaxEvadeMagnitude);
-                        float num3 = Math.Min(num2 * 10f, GS_EvadeModSettings.Instance.maximumEvadeChance);
+                        float num2 = Mathf.Clamp(
+                            (float)numStat / num,
+                            GS_EvadeModSettings.Instance.MinEvadeMagnitude,
+                            GS_EvadeModSettings.Instance.MaxEvadeMagnitude
+                        );
+                        float num3 = Math.Min(
+                            num2 * 10f,
+                            GS_EvadeModSettings.Instance.maximumEvadeChance
+                        );
                         if (!Rand.Chance(num3))
                         {
                             return true;
@@ -1531,15 +1715,37 @@ namespace GS_Core
 
                         if (pawn.Map != null)
                         {
-                            SoundDefOf.BulletImpact_Ground?.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
-                            FleckMaker.Static(pawn.TrueCenter() + Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle).RotatedBy(180f) * 0.5f, scale: Mathf.Min(10f, 2f + dinfo.Amount / 10f), map: pawn.Map, fleckDef: FleckDefOf.AirPuff);
+                            SoundDefOf.BulletImpact_Ground?.PlayOneShot(
+                                new TargetInfo(pawn.Position, pawn.Map)
+                            );
+                            FleckMaker.Static(
+                                pawn.TrueCenter()
+                                    + Vector3Utility
+                                        .HorizontalVectorFromAngle(dinfo.Angle)
+                                        .RotatedBy(180f) * 0.5f,
+                                scale: Mathf.Min(10f, 2f + dinfo.Amount / 10f),
+                                map: pawn.Map,
+                                fleckDef: FleckDefOf.AirPuff
+                            );
                             if (GS_EvadeModSettings.Instance.verboseEvadeReadout)
                             {
-                                MoteMaker.ThrowText(pawn.DrawPos, pawn.Map, "GS_Evade_TextMote_Evade".Translate($"{num3.ToStringPercent()}={statValue}*{num2}={numStat}M/{num}S "), 3.9f);
+                                MoteMaker.ThrowText(
+                                    pawn.DrawPos,
+                                    pawn.Map,
+                                    "GS_Evade_TextMote_Evade".Translate(
+                                        $"{num3.ToStringPercent()}={statValue}*{num2}={numStat}M/{num}S "
+                                    ),
+                                    3.9f
+                                );
                             }
                             else
                             {
-                                MoteMaker.ThrowText(pawn.DrawPos, pawn.Map, "GS_Evade_TextMote_Evade".Translate(num3.ToStringPercent()), 1.9f);
+                                MoteMaker.ThrowText(
+                                    pawn.DrawPos,
+                                    pawn.Map,
+                                    "GS_Evade_TextMote_Evade".Translate(num3.ToStringPercent()),
+                                    1.9f
+                                );
                             }
                         }
 
@@ -1576,7 +1782,11 @@ namespace GS_Core
                         num5 = pawn3.skills.GetSkill(SkillDefOf.Melee)?.Level ?? 0;
                     }
                 }
-                float num7 = Mathf.Clamp(num4 / num5, GS_EvadeModSettings.Instance.MinEvadeMagnitude, GS_EvadeModSettings.Instance.MaxEvadeMagnitude);
+                float num7 = Mathf.Clamp(
+                    num4 / num5,
+                    GS_EvadeModSettings.Instance.MinEvadeMagnitude,
+                    GS_EvadeModSettings.Instance.MaxEvadeMagnitude
+                );
                 float num8 = Math.Min(num4 * 10f, GS_EvadeModSettings.Instance.maximumEvadeChance);
                 if (!Rand.Chance(num8))
                 {
@@ -1586,14 +1796,33 @@ namespace GS_Core
                 if (pawn.Map != null)
                 {
                     SoundDefOf.Crunch?.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
-                    FleckMaker.Static(pawn.TrueCenter() + Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle).RotatedBy(180f) * 0.5f, scale: Mathf.Min(10f, 2f + dinfo.Amount / 10f), map: pawn.Map, fleckDef: FleckDefOf.ExplosionFlash);
+                    FleckMaker.Static(
+                        pawn.TrueCenter()
+                            + Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle).RotatedBy(180f)
+                                * 0.5f,
+                        scale: Mathf.Min(10f, 2f + dinfo.Amount / 10f),
+                        map: pawn.Map,
+                        fleckDef: FleckDefOf.ExplosionFlash
+                    );
                     if (GS_EvadeModSettings.Instance.verboseEvadeReadout)
                     {
-                        MoteMaker.ThrowText(pawn.DrawPos, pawn.Map, "GS_Evade_TextMote_Evade".Translate($"{num8.ToStringPercent()}={statValue2}*{num7}={num4}M/{num5}M "), 3.9f);
+                        MoteMaker.ThrowText(
+                            pawn.DrawPos,
+                            pawn.Map,
+                            "GS_Evade_TextMote_Evade".Translate(
+                                $"{num8.ToStringPercent()}={statValue2}*{num7}={num4}M/{num5}M "
+                            ),
+                            3.9f
+                        );
                     }
                     else
                     {
-                        MoteMaker.ThrowText(pawn.DrawPos, pawn.Map, "GS_Evade_TextMote_Evade".Translate(num8.ToStringPercent()), 1.9f);
+                        MoteMaker.ThrowText(
+                            pawn.DrawPos,
+                            pawn.Map,
+                            "GS_Evade_TextMote_Evade".Translate(num8.ToStringPercent()),
+                            1.9f
+                        );
                     }
                 }
                 absorbed = true;
@@ -1645,7 +1874,13 @@ namespace GS_Core
             Rect inRect2 = new Rect(inRect);
             Rect rowRect = UIHelper.GetRowRect(inRect2, rowHeight, num);
             num++;
-            Widgets.TextFieldNumericLabeled(UIHelper.GetRowRect(inRect2, rowHeight, num), "GS_Evade_MaxEvadeChance".Translate(), ref GS_EvadeModSettings.Instance.maximumEvadeChance, ref maxEvadeChanceBuffer, 0.01f);
+            Widgets.TextFieldNumericLabeled(
+                UIHelper.GetRowRect(inRect2, rowHeight, num),
+                "GS_Evade_MaxEvadeChance".Translate(),
+                ref GS_EvadeModSettings.Instance.maximumEvadeChance,
+                ref maxEvadeChanceBuffer,
+                0.01f
+            );
         }
     }
 
@@ -1656,7 +1891,6 @@ namespace GS_Core
 
         public static StatDef GS_Evade_EvadeMeleeChance;
     }
-
 
     public class GS_EvadeModSettings : ModSettings
     {
@@ -1800,7 +2034,12 @@ namespace GS_Core
                     SpawnEffect(GenSpawn.Spawn(GS_ThingDefOf.GS_ShieldProjector, intVec, map));
                 }
             }
-            Messages.Message("AbilityNotEnoughFreeSpace".Translate(), Pawn, MessageTypeDefOf.RejectInput, historical: false);
+            Messages.Message(
+                "AbilityNotEnoughFreeSpace".Translate(),
+                Pawn,
+                MessageTypeDefOf.RejectInput,
+                historical: false
+            );
         }
 
         /**
@@ -1820,8 +2059,14 @@ namespace GS_Core
         **/
         private static void SpawnEffect(Thing projector)
         {
-            FleckMaker.Static(projector.TrueCenter(), projector.Map, FleckDefOf.BroadshieldActivation);
-            SoundDefOf.Broadshield_Startup.PlayOneShot(new TargetInfo(projector.Position, projector.Map));
+            FleckMaker.Static(
+                projector.TrueCenter(),
+                projector.Map,
+                FleckDefOf.BroadshieldActivation
+            );
+            SoundDefOf.Broadshield_Startup.PlayOneShot(
+                new TargetInfo(projector.Position, projector.Map)
+            );
         }
 
         public override bool AICanTargetNow(LocalTargetInfo target)
@@ -1846,29 +2091,49 @@ namespace GS_Core
     {
         public override IEnumerable<BodyPartRecord> GetPartsToApplyOn(Pawn pawn, RecipeDef recipe)
         {
-            return MedicalRecipesUtility.GetFixedPartsToApplyOn(recipe, pawn, delegate (BodyPartRecord record)
-            {
-                IEnumerable<Hediff> source = pawn.health.hediffSet.hediffs.Where((Hediff x) => x.Part == record);
-                if (typeof(Hediff_AddedPart).IsAssignableFrom(recipe.addsHediff.hediffClass))
+            return MedicalRecipesUtility.GetFixedPartsToApplyOn(
+                recipe,
+                pawn,
+                delegate(BodyPartRecord record)
                 {
-                    if (source.Count() == 1 && source.First().def == recipe.addsHediff)
+                    IEnumerable<Hediff> source = pawn.health.hediffSet.hediffs.Where(
+                        (Hediff x) => x.Part == record
+                    );
+                    if (typeof(Hediff_AddedPart).IsAssignableFrom(recipe.addsHediff.hediffClass))
+                    {
+                        if (source.Count() == 1 && source.First().def == recipe.addsHediff)
+                        {
+                            return false;
+                        }
+                    }
+                    else if (source.Any((Hediff hd) => hd.def == recipe.addsHediff))
                     {
                         return false;
                     }
+                    if (
+                        record.parent != null
+                        && !pawn.health.hediffSet.GetNotMissingParts().Contains(record.parent)
+                    )
+                    {
+                        return false;
+                    }
+                    return (
+                        !pawn.health.hediffSet.PartOrAnyAncestorHasDirectlyAddedParts(record)
+                        || pawn.health.hediffSet.HasDirectlyAddedPartFor(record)
+                    )
+                        ? true
+                        : false;
                 }
-                else if (source.Any((Hediff hd) => hd.def == recipe.addsHediff))
-                {
-                    return false;
-                }
-                if (record.parent != null && !pawn.health.hediffSet.GetNotMissingParts().Contains(record.parent))
-                {
-                    return false;
-                }
-                return (!pawn.health.hediffSet.PartOrAnyAncestorHasDirectlyAddedParts(record) || pawn.health.hediffSet.HasDirectlyAddedPartFor(record)) ? true : false;
-            });
+            );
         }
 
-        public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer, List<Thing> ingredients, Bill bill)
+        public override void ApplyOnPawn(
+            Pawn pawn,
+            BodyPartRecord part,
+            Pawn billDoer,
+            List<Thing> ingredients,
+            Bill bill
+        )
         {
             if (billDoer != null)
             {
