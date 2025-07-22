@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <WorkGiverDef>
     <defName>GS_Core_Warden_DeliverFuel</defName>
@@ -12,7 +12,6 @@
       <li>Manipulation</li>
     </requiredCapacities>
   </WorkGiverDef>
-  
   <WorkGiverDef>
     <defName>GS_Core_FeedFuel</defName>
     <label>administer Fuel</label>
@@ -26,5 +25,4 @@
     </requiredCapacities>
     <prioritizeSustains>true</prioritizeSustains>
   </WorkGiverDef>
-
 </Defs>

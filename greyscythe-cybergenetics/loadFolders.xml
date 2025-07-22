@@ -1,7 +1,8 @@
+<?xml version="1.0"?>
 <loadFolders>
-	<v1.6>
-		<li>/</li>
-		<li>1.6</li>
-		<li IfModActive="vanillaracesexpanded.android">1.6/Mods/VanillaRacesExpandedAndroid</li>
-	</v1.6>
+  <v1.6>
+    <li>/</li>
+    <li>1.6</li>
+    <li IfModActive="vanillaracesexpanded.android">1.6/Mods/VanillaRacesExpandedAndroid</li>
+  </v1.6>
 </loadFolders>

@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <ModMetaData>
   <name>Greyscythe Cybergenetics</name>
   <author>Feaurie</author>
@@ -22,18 +23,18 @@
       <packageId>Ludeon.RimWorld.Biotech</packageId>
       <displayName>Biotech</displayName>
     </li>
-	</modDependencies>
-	<loadAfter>
-		<li>Ludeon.RimWorld</li>
-		<li>Ludeon.RimWorld.Royalty</li>
-		<li>Ludeon.RimWorld.Ideology</li>
-		<li>Ludeon.RimWorld.Biotech</li>
-		<li>brrainz.harmony</li>
-		<li>OskarPotocki.VanillaFactionsExpanded.Core</li>
-		<li>vanillaracesexpanded.android</li>
-	</loadAfter>
-	<incompatibleWith>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>brrainz.harmony</li>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+    <li>vanillaracesexpanded.android</li>
+  </loadAfter>
+  <incompatibleWith>
 	</incompatibleWith>
-	<packageId>feaurie.GreyscytheGenes</packageId>
-	<description>This mod adds a bunch of cybernetic-themed biotech genes for designing powerful supersoldiers.</description>
+  <packageId>feaurie.GreyscytheGenes</packageId>
+  <description>This mod adds a bunch of cybernetic-themed biotech genes for designing powerful supersoldiers.</description>
 </ModMetaData>
