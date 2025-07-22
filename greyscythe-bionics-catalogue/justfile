@@ -1,0 +1,4 @@
+rel:
+    rm -rvf /tmp/Greyscythe_Bionics
+    mkdir -vp /tmp/Greyscythe_Bionics
+    cp -rav 1.6 About loadFolders.xml Textures /tmp/Greyscythe_Bionics

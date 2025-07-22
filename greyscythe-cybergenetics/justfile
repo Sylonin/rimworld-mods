@@ -1,0 +1,4 @@
+rel:
+    rm -rvf /tmp/Greyscythe_Cybergenetics
+    mkdir -vp /tmp/Greyscythe_Cybergenetics
+    cp -rav 1.6 About Languages loadFolders.xml Textures /tmp/Greyscythe_Cybergenetics
