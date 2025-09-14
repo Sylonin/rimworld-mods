@@ -44,7 +44,7 @@
       <li Class="CompProperties_Flickable"/>
       <li Class="CompProperties_Glower">
         <glowRadius>5</glowRadius>
-        <glowColor>(225,165,75,0</glowColor>
+        <glowColor>(225,165,75,0)</glowColor>
       </li>
       <li Class="CompProperties_AffectedByFacilities">
         <linkableFacilities>
