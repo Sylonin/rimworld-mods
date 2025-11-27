@@ -55,7 +55,7 @@
       <Medicine>15</Medicine>
     </skillRequirements>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Central Hyperlane ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -101,8 +101,8 @@
         </statOffsets>
         <statFactors>
           <MoveSpeed>1.2</MoveSpeed>
-          <VEF_RangeAttackSpeedFactor>1.2</VEF_RangeAttackSpeedFactor>
-          <VEF_MeleeAttackSpeedFactor>1.2</VEF_MeleeAttackSpeedFactor>
+          <RangedCooldownFactor>1.2</RangedCooldownFactor>
+          <MeleeCooldownFactor>1.2</MeleeCooldownFactor>
           <MeleeDamageFactor>1.2</MeleeDamageFactor>
         </statFactors>
       </li>
@@ -163,7 +163,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_centralhyperlane</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Synthblood Fabricator ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -265,7 +265,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_synthbloodfab</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Synthblood Scrubbers ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -367,7 +367,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_synthbloodpump</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** GS-Core ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -413,8 +413,8 @@
         <statFactors>
           <LifespanFactor>1.25</LifespanFactor>
           <InjuryHealingFactor>1.25</InjuryHealingFactor>
-          <VEF_MeleeAttackSpeedFactor>1.25</VEF_MeleeAttackSpeedFactor>
-          <VEF_RangeAttackSpeedFactor>1.25</VEF_RangeAttackSpeedFactor>
+          <MeleeCooldownFactor>1.25</MeleeCooldownFactor>
+          <RangedCooldownFactor>1.25</RangedCooldownFactor>
         </statFactors>
         <totalBleedFactor>0.5</totalBleedFactor>
       </li>
@@ -475,7 +475,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_gscore</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Ultramind ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -573,7 +573,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_ultramind</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** cyberintergrate ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -679,7 +679,7 @@
     <jobString>Removing cyberintergrate.</jobString>
     <removesHediff>GS_Hediff_cyberintergrate</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** skelemuscle ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -720,7 +720,7 @@
         </statOffsets>
         <statFactors>
           <VEF_MeleeAttackDamageFactor>1.25</VEF_MeleeAttackDamageFactor>
-          <VEF_RangeAttackSpeedFactor>1.15</VEF_RangeAttackSpeedFactor>
+          <RangedCooldownFactor>1.15</RangedCooldownFactor>
           <ShootingAccuracyPawn>1.15</ShootingAccuracyPawn>
           <IncomingDamageFactor>0.85</IncomingDamageFactor>
           <StaggerDurationFactor>0.5</StaggerDurationFactor>
@@ -787,7 +787,7 @@
     <jobString>Removing skelemuscle.</jobString>
     <removesHediff>GS_Hediff_skelemuscle</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** ambiskull ***
 -->
   <HediffDef ParentName="ImplantHediffBase">

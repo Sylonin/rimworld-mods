@@ -55,7 +55,7 @@
       <Medicine>12</Medicine>
     </skillRequirements>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Hexa Eye ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -148,7 +148,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_hexaeye</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** eyetracer ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -239,7 +239,7 @@
     <jobString>Removing eyetracer.</jobString>
     <removesHediff>GS_Hediff_eyetracer</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** eyepredictor ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -330,7 +330,7 @@
     <jobString>Removing eyepredictor.</jobString>
     <removesHediff>GS_Hediff_eyepredictor</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Toxfilter Nose ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -415,7 +415,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_toxfilternose</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Ripper Jaw ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -516,7 +516,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_ripjaw</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** nutrientgrinder ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -603,7 +603,7 @@
     <jobString>Removing nutrientgrinder.</jobString>
     <removesHediff>GS_Hediff_nutrientgrinder</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Attenuation Ear ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -689,7 +689,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_attenuationear</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** rangefinder ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -777,7 +777,7 @@
     <jobString>Removing rangefinder.</jobString>
     <removesHediff>GS_Hediff_rangefinder</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** hurricane ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -883,7 +883,7 @@
     <jobString>Removing hurricane.</jobString>
     <removesHediff>GS_Hediff_hurricane</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** overshield ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -982,7 +982,7 @@
     <jobString>Removing overshield.</jobString>
     <removesHediff>GS_Hediff_overshield</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** calfthruster ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -1064,7 +1064,7 @@
     <jobString>Removing calfthruster.</jobString>
     <removesHediff>GS_Hediff_calfthruster</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** shoulderthruster ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -1150,7 +1150,7 @@
     <jobString>Removing shoulderthruster.</jobString>
     <removesHediff>GS_Hediff_shoulderthruster</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** recoildampener ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -1232,7 +1232,7 @@
     <jobString>Removing recoildampener.</jobString>
     <removesHediff>GS_Hediff_recoildampener</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** flameblock ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -1316,7 +1316,7 @@
     <jobString>Removing flameblock.</jobString>
     <removesHediff>GS_Hediff_flameblock</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** exoshield ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -1409,7 +1409,7 @@
     <jobString>Removing exoshield.</jobString>
     <removesHediff>GS_Hediff_exoshield</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** jointstabilizer ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -1508,7 +1508,7 @@
     <jobString>Removing jointstabilizer.</jobString>
     <removesHediff>GS_Hediff_jointstabilizer</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** reactionaccel ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -1611,7 +1611,7 @@
     <jobString>Removing reactionaccel.</jobString>
     <removesHediff>GS_Hediff_reactionaccel</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** neuralboost ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -1713,7 +1713,7 @@
     <jobString>Removing neuralboost.</jobString>
     <removesHediff>GS_Hediff_neuralboost</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** selfrepair ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -1806,7 +1806,7 @@
     <jobString>Removing selfrepair.</jobString>
     <removesHediff>GS_Hediff_selfrepair</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** ultraprocessor ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -1907,7 +1907,7 @@
     <jobString>Removing ultraprocessor.</jobString>
     <removesHediff>GS_Hediff_ultraprocessor</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Gyro-Stabilizer ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -1999,7 +1999,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_gyrostabilizer</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Oxygen Compressor ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -2035,8 +2035,8 @@
           <MoveSpeed>1.2</MoveSpeed>
         </statOffsets>
         <statFactors>
-          <VEF_MeleeAttackSpeedFactor>1.15</VEF_MeleeAttackSpeedFactor>
-          <VEF_RangeAttackSpeedFactor>1.15</VEF_RangeAttackSpeedFactor>
+          <MeleeCooldownFactor>1.15</MeleeCooldownFactor>
+          <RangedCooldownFactor>1.15</RangedCooldownFactor>
         </statFactors>
       </li>
     </stages>
@@ -2096,7 +2096,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_oxygencompress</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** enhancedtrach ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -2194,7 +2194,7 @@
     <jobString>Removing enhancedtrach.</jobString>
     <removesHediff>GS_Hediff_enhancedtrach</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Reinforced Central Shield ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -2290,7 +2290,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_centralshield</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Organ Exo-Shell ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -2391,7 +2391,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_organexoshield</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** Hyper Refinery ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -2491,7 +2491,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_hyperefinery</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** shouldergun ***
 -->
   <HediffDef ParentName="ImplantHediffBase">
@@ -2606,7 +2606,7 @@
     <jobString>Removing shoulder-mounted assault turret.</jobString>
     <removesHediff>GS_Hediff_shouldergun_ultra</removesHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** hipgun_ultra ***
 -->
   <HediffDef ParentName="ImplantHediffBase">

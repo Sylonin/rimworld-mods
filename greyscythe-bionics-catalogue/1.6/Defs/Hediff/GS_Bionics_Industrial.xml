@@ -39,7 +39,7 @@
       <Medicine>5</Medicine>
     </skillRequirements>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** pilebunkerarm ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -139,7 +139,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_Hediff_pilebunkerarm</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** chainsawarm ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -239,7 +239,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_Hediff_chainsawarm</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** handcannon ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -350,7 +350,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_handcannon</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** machinegunarm ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -472,7 +472,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_machinegunarm</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** launcherarm ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -586,7 +586,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_launcherarm</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** autoloader arm ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -604,7 +604,7 @@
           <ShootingAccuracyPawn>-0.15</ShootingAccuracyPawn>
         </statOffsets>
         <statFactors>
-          <VEF_RangeAttackSpeedFactor>1.4</VEF_RangeAttackSpeedFactor>
+          <RangedCooldownFactor>1.4</RangedCooldownFactor>
         </statFactors>
       </li>
     </stages>
@@ -748,7 +748,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_Hediff_AthleteProstheticLeg</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** mining arm ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -835,7 +835,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_miningarm</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** medi-arm ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -922,7 +922,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_mediarm</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** culin-arm ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -1009,7 +1009,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_culiarm</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** garden-arm ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
@@ -1082,7 +1082,7 @@
     </appliedOnFixedBodyParts>
     <addsHediff>GS_hediff_gardenarm</addsHediff>
   </RecipeDef>
-  <!-- 
+  <!--
 		*** construction arm ***
 -->
   <HediffDef ParentName="AddedBodyPartBase">
