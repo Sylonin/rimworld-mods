@@ -2035,8 +2035,8 @@
           <MoveSpeed>1.2</MoveSpeed>
         </statOffsets>
         <statFactors>
-          <MeleeCooldownFactor>1.15</MeleeCooldownFactor>
-          <RangedCooldownFactor>1.15</RangedCooldownFactor>
+          <MeleeCooldownFactor>0.85</MeleeCooldownFactor>
+          <RangedCooldownFactor>0.85</RangedCooldownFactor>
         </statFactors>
       </li>
     </stages>

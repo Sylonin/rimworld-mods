@@ -604,7 +604,7 @@
           <ShootingAccuracyPawn>-0.15</ShootingAccuracyPawn>
         </statOffsets>
         <statFactors>
-          <RangedCooldownFactor>1.4</RangedCooldownFactor>
+          <RangedCooldownFactor>0.6</RangedCooldownFactor>
         </statFactors>
       </li>
     </stages>

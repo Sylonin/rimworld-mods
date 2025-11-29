@@ -101,8 +101,8 @@
         </statOffsets>
         <statFactors>
           <MoveSpeed>1.2</MoveSpeed>
-          <RangedCooldownFactor>1.2</RangedCooldownFactor>
-          <MeleeCooldownFactor>1.2</MeleeCooldownFactor>
+          <RangedCooldownFactor>0.8</RangedCooldownFactor>
+          <MeleeCooldownFactor>0.8</MeleeCooldownFactor>
           <MeleeDamageFactor>1.2</MeleeDamageFactor>
         </statFactors>
       </li>
@@ -413,8 +413,8 @@
         <statFactors>
           <LifespanFactor>1.25</LifespanFactor>
           <InjuryHealingFactor>1.25</InjuryHealingFactor>
-          <MeleeCooldownFactor>1.25</MeleeCooldownFactor>
-          <RangedCooldownFactor>1.25</RangedCooldownFactor>
+          <MeleeCooldownFactor>0.75</MeleeCooldownFactor>
+          <RangedCooldownFactor>0.75</RangedCooldownFactor>
         </statFactors>
         <totalBleedFactor>0.5</totalBleedFactor>
       </li>
@@ -720,7 +720,7 @@
         </statOffsets>
         <statFactors>
           <VEF_MeleeAttackDamageFactor>1.25</VEF_MeleeAttackDamageFactor>
-          <RangedCooldownFactor>1.15</RangedCooldownFactor>
+          <RangedCooldownFactor>0.85</RangedCooldownFactor>
           <ShootingAccuracyPawn>1.15</ShootingAccuracyPawn>
           <IncomingDamageFactor>0.85</IncomingDamageFactor>
           <StaggerDurationFactor>0.5</StaggerDurationFactor>
