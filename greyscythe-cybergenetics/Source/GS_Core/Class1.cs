@@ -1580,8 +1580,24 @@ namespace GS_Core
                 list.Add(parent.pawn);
             }
 
-            // TODO: port the below
-            // GenExplosion.DoExplosion(Pawn.Position, Pawn.MapHeld, Props.radius, Props.damageType, Pawn, Props.damageAmount, Props.damagePenetration, Props.soundCreated, null, null, null, Props.thingCreated, Props.thingCreatedChance, 1, Props.gasType,  null, 0f, 1, Props.chanceToStartFire, Props.damageFalloff, null, list, applyDamageToExplosionCellsNeighbors: false);
+            GenExplosion.DoExplosion(
+                center: Pawn.Position,
+                map: Pawn.MapHeld,
+                radius: Props.radius,
+                damType: Props.damageType,
+                instigator: Pawn,
+                damAmount: Props.damageAmount,
+                armorPenetration: Props.damagePenetration,
+                explosionSound: Props.soundCreated,
+                postExplosionSpawnThingDef: Props.thingCreated,
+                postExplosionSpawnChance: Props.thingCreatedChance,
+                postExplosionSpawnThingCount: 1,
+                postExplosionGasType: Props.gasType,
+                applyDamageToExplosionCellsNeighbors: false,
+                chanceToStartFire: Props.chanceToStartFire,
+                damageFalloff: Props.damageFalloff,
+                ignoredThings: list
+            );
             base.Apply(target, dest);
         }
 
