@@ -10,9 +10,12 @@
 
 repo    := justfile_directory()
 name    := "Greyscythe_Bionics"
-stage   := "/tmp" / name
+# steamcmd (nix build) runs with a private /tmp and cannot read files staged
+# there, so stage under a home-based cache dir it can actually see.
+stagedir := env('XDG_CACHE_HOME', env('HOME') / ".cache") / "greyscythe-workshop"
+stage   := stagedir / name
 appid   := "294100"                       # RimWorld
-vdf_out := "/tmp" / name + ".vdf"
+vdf_out := stagedir / name + ".vdf"
 steam_user := env('STEAM_USER', "")
 changenote := env('CHANGENOTE', "Update from source repo")
 
