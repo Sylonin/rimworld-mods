@@ -14,11 +14,17 @@
     <OutputPath>..\..\1.6\Assemblies\</OutputPath>
     <ProjectGuid>{2939CD5F-F598-4D85-9FB2-D2EFC3CA94BF}</ProjectGuid>
 
+    <!-- Reproducible builds: no timestamps/random GUIDs, source paths
+         normalized in the PE, invariant restore. -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <DeterministicSourcePaths>true</DeterministicSourcePaths>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.*-*" />
-    <PackageReference Include="Lib.Harmony" Version="2.3.*" ExcludeAssets="runtime" />
+    <!-- Pinned exact versions; floating ranges resolve differently over time. -->
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4871" />
+    <PackageReference Include="Lib.Harmony" Version="2.3.6" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
