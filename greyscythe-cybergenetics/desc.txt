@@ -1,0 +1,62 @@
+Original mod: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3250708754]https://steamcommunity.com/sharedfiles/filedetails/?id=3250708754[/url]
+
+Source code: [url=https://github.com/Sylonin/rimworld-mods/tree/main/greyscythe-cybergenetics]https://github.com/Sylonin/rimworld-mods/tree/main/greyscythe-cybergenetics[/url]
+
+[hr][/hr]
+[h1]Original Description[/h1]
+[i]Reproduced from the original listing by [url=https://steamcommunity.com/id/feaurievlads]Feaurie V[/url] — [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3250708754]Greyscythe Cybergenetics[/url]. All credit for the original mod and its description goes to them.[/i]
+[hr][/hr]
+
+Have you ever wanted colonists who could pick a fight with the best of them, but didn't trivialise the entire game with their massive non-combat capabilities?
+
+[h1]HAVE A GANDER AT GREYSCYTHE INDUSTRIES' CYBERGENETICS CATALOGUE![/h1]
+
+This mod adds a bunch of cybernetic-themed biotech genes for designing powerful cyborg supersoldiers. These genes are specifically designed to enhance a pawn's fighting and survival capabilities, without enhancing their base stats such as manipulation or blood pumping.
+
+What's that you say? This really should be a bionics mod rather than a genetics mod? Don't get too wound up about it, I have a bionics mod in the works too!
+
+[h2]Cybernetics Catalogue[/h2]
+
+[h3]Offensive Genes[/h3]
+[img]https://steamuserimages-a.akamaihd.net/ugc/2458480429368748663/553CACB226BE3C752FDB47B90AA71C04B25CCDA6/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
+
+Genes designed to enhance a pawn's ability to maim and kill. Do you want a fast moving cyborg ninja? A long ranged master sniper? Not a problem!
+
+Modules within the same category are mutually exclusive.
+
+[h3]Defensive Genes[/h3]
+[img]https://steamuserimages-a.akamaihd.net/ugc/2458480429368974421/491BAAEA2F7B73D113AA45A91CBE2C8ABD6BC780/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
+
+Genes designed to keep your little kill-bots alive! Naturally, biological bodies are frail and limited, so Greyscythe Industries highly recommends you still equip your cyborgs with armor. Warranties not included.
+
+[h3]Fuel Resource Genes[/h3]
+[img]https://steamuserimages-a.akamaihd.net/ugc/2458480429368749535/0D4B521B42122357D76F79B637604F33699ECD30/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
+
+A special gene line that allows cyborgs to ingest fuel cells and store the energy within themselves to be used as an expendable resource. They can use this resource to power temporary performance upgrades, release deadly explosions, or jump great distances.
+
+[h3]Budget Savers![/h3]
+[img]https://steamuserimages-a.akamaihd.net/ugc/2458480429368750067/6E8DB1BC128299F6B2FA3B99BB0E24E7EA4FC97B/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
+
+Can't afford to feed your overtuned cyborgs? Not to worry, we also have a small collection of cost-cutting measures for your to choose from!
+
+[h3]Decorations[/h3]
+[img]https://steamuserimages-a.akamaihd.net/ugc/2458480429368750453/32ADA347D42CD8D2F6C56296D1B1F7CA2055189F/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false[/img]
+
+Free with purchase of any combat cyborg.
+
+[h2]Compatibilities[/h2]
+[list]
+[*]Not compatible with CE (Because I don't use CE)
+[*]Tested to be compatible with Alpha Genes, Big and Small, Warhammer 40k genes. Should be compatible with any other gene-adding mods?
+[*]Added compatibility with VRE Androids!
+[/list]
+
+[h2]Recommended Mods[/h2]
+[list]
+[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=1695493009]Unlimited Armor[/url]
+[/list]
+
+[h3]Update[/h3]
+23 May 2024 - Updated the Skirmisher, Ranger and Sniper traits, making them no longer boost accuracy into the stratosphere. The bug was caused by the fact that apparently the ranged accuracy factors are calculated on a per-tile basis, rather than as a lump multiplier. Thank you to @IChugWindex for pointing out this bug!
+
+28 May 2024 - I have removed the Armor patch from this mod, as I've realised it may have been a bit of an overreach that not everyone appreciates. Regardless, I will recommend the use of an armor-unlimiting mod to get full use of my mods!

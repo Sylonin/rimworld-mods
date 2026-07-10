@@ -1,0 +1,137 @@
+Original mod: [url=https://steamcommunity.com/workshop/filedetails/?id=3255627094]https://steamcommunity.com/workshop/filedetails/?id=3255627094[/url]
+
+Source code: [url=https://github.com/Sylonin/rimworld-mods/tree/main/greyscythe-bionics-catalogue]https://github.com/Sylonin/rimworld-mods/tree/main/greyscythe-bionics-catalogue[/url]
+
+See also: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3532445936]https://steamcommunity.com/sharedfiles/filedetails/?id=3532445936[/url]
+
+[hr][/hr]
+[h1]Original Description[/h1]
+[i]Reproduced from the original listing by [url=https://steamcommunity.com/id/feaurievlads]Feaurie V[/url] — [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3255627094]Greyscythe Bionics Catalogue[/url]. All credit for the original mod and its description goes to them.[/i]
+[hr][/hr]
+
+Ever wanted a load of new prosthesis, bionics and implants for all tech levels? Ever wanted to replace literally every possible bodypart with a cybernetic upgrade? Ever wanted bionics that could rival those made by archotechs?
+
+[h1]HAVE A GANDER AT GREYSCYTHE INDUSTRIES' BIONICS CATALOGUE![/h1]
+
+This mod adds a total of more than 70 new prosthesis, bionics and implants, spread across all tech levels (even Neolithic!), with most of them being post-spacer tech, as a way to really push your colonists to their absolute limits. Some of the choice picks from the Ultratech category include the Shoulder/hip-mounted autoturrets and Hurricane close defense system.
+
+In order to craft the Ultra and Archotech level bionics, you'll need to build the Greyscythe Realspace Manifold, an Ultratech level production facility.
+
+[h2]Bionics Catalogue[/h2]
+
+[h3]Neothic[/h3]
+[olist]
+[*]Clubfist
+[*]Ikwafist
+[*]Skullspike
+[*]Warrior's Brand
+[*]Shaman's Brand
+[*]Slave's Brand
+[/olist]
+
+[h3]Medieval[/h3]
+[olist]
+[*]Battle Arm - Heavy metal arm with elbow + knuckle spikes
+[*]Battle Leg - Heavy metal leg with knee + foot spikes
+[*]Sword Hand
+[*]Axe Hand
+[*]Mace Hand
+[*]Crossbow Hand
+[*]Beast Jaw
+[*]Glass Eye
+[*]Wooden Nose
+[*]Wooden Ear
+[/olist]
+
+[h3]Industrial[/h3]
+[olist]
+[*]Hand-Cannon
+[*]Machinegun Arm
+[*]Launcher Arm
+[*]Autoloader Arm
+[*]Chainsaw Arm
+[*]Pilebunker Arm
+[*]Athlete's Leg
+[*]Medi-Arm
+[*]Mining-Arm
+[*]Culin-Arm
+[*]Garden-Arm
+[*]Construction-Arm
+[/olist]
+
+[h3]Spacer[/h3]
+[olist]
+[*]Beam Wristblades
+[*]Transforming Hand-Cannon
+[*]Transforming Machinegun Hand
+[*]Transforming Launcher Arm
+[*]Plasteel Ribs
+[*]Medi-Arm Mk.2
+[*]Mining-Arm Mk.2
+[*]Culin-Arm Mk.2
+[*]Garden-Arm Mk.2
+[*]Construction-Arm Mk.2
+[*]Heel-Skates (Leg implant)
+[*]Carapace (Torso implant)
+[*]Spinal Reinforcement (Spine implant)
+[*]Compression Tank (Stomach implant)
+[*]Power-pack (Sternum implant)
+[/olist]
+
+[h3]Ultratech[/h3]
+[olist]
+[*]Hexa Eyes
+[*]Ripjaw
+[*]Attenuation Ear
+[*]Toxfilter Nose
+[*]Gyro-Stabilizer (Pelvis replacement)
+[*]Oxygen Compressor (Lung replacement)
+[*]Organ Exo-Shell (Rib replacement)
+[*]Reinforced Central Shield (Sternum replacement)
+[*]Extreme Fuel Extractor (Stomach replacement)
+[*]Calf Thrusters (Leg implant)
+[*]Shoulder Thrusters (Shoulder implant)
+[*]Arm Recoil Dampeners (Shoulder implant)
+[*]Joint Stabilizers (Shoulder and Leg implants)
+[*]Shoulderturret (Shoulder implant)
+[*]Hipturret (Leg implant)
+[*]Exoshield (Torso implant)
+[*]Torso Claymore (Active Torso implant)
+[*]Overshield (Active Torso implant)
+[*]Flameblock (Torso implant)
+[*]Reaction Accelerator (Spine implant)
+[*]Neural Booster (Brain implant)
+[*]Personal Autodoc (Liver implant)
+[*]Tracer Eye Implant (Eye implant)
+[*]Predictor Eye Implant (Eye implant)
+[*]Grinder Jaw Implant (Jaw implant)
+[*]Rangefinder (Ear implant)
+[*]Food Ultraprocessor (Stomach implant)
+[*]Enhanced Trachea (Neck implant)
+[/olist]
+
+[h3]Archotech[/h3]
+[olist]
+[*]Synthblood Fabricator (Liver replacement)
+[*]Synthblood Scrubbers (Kidney replacement)
+[*]Central Hyperlane (Spine replacement)
+[*]GS-Core (heart replacement)
+[*]Ultramind (Brain replacement)
+[*]Full Circulatory Cyberintegration (Torso implant)
+[*]Full Skeletomuscular Enhancement (Torso implant)
+[*]Ambiskull (Skull Implant)
+[/olist]
+
+I will admit that this mod was made with certain difficulty boosting mods in mind! So that's something to keep in mind if this mod makes your late game too easy (which it almost definitely will).
+
+[b]Why use this mod instead of Rah's or EPOE?[/b]
+Don't! This mod is supplementary to those mods, and designed to be used together with them! It doesn't replace the standard bionics!
+
+[b]Why does this mod require Cybergenetics?[/b]
+This mod uses code from the assemblies I made for Cybergenetics.
+
+[b]Is this mod compatible with CE?[/b]
+I don't know, probably not. I don't use CE.
+
+[h2]Update[/h2]
+31st May 2024 - Greyscythe Implants can now be implanted onto Bionics!
