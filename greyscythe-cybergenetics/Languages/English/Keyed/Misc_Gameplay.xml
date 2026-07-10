@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <RegenerationRate>Regeneration Rate</RegenerationRate>
-  <DrainRate>Drain Rate</DrainRate>
-  <PerDay>per Day</PerDay>
   <GS_Evade>Greyscythe Cybergenetics evasion stat settings</GS_Evade>
   <GS_Evade_TextMote_Evade>Evaded!</GS_Evade_TextMote_Evade>
   <GS_Evade_VerboseEvadeReadout>Turn on verbose readout for evasion chance</GS_Evade_VerboseEvadeReadout>
