@@ -3,8 +3,8 @@ inputs:
   nixpkgs:
     url: github:cachix/devenv-nixpkgs/rolling
 
-# If you're using non-OSS software, you can set allowUnfree to true.
-# allowUnfree: true
+# steamcmd (Workshop publishing) is unfree-redistributable.
+allowUnfree: true
 
 # If you're willing to use a package that's vulnerable
 # permittedInsecurePackages:

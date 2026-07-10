@@ -1,4 +1,56 @@
+# Release + Steam Workshop publishing for Greyscythe Bionics Catalogue.
+#
+#   just rel        clean + stage shippable folders to {{stage}}
+#   just vdf        write the steamcmd workshop VDF for the staged folder
+#   just publish    stage + upload to the Workshop via steamcmd
+#
+# Pure-XML mod (no assembly to build). `publish` needs steamcmd (from the
+# devenv shell) and a Steam login. Set STEAM_USER; first run prompts for
+# password + Steam Guard interactively.
+
+repo    := justfile_directory()
+name    := "Greyscythe_Bionics"
+stage   := "/tmp" / name
+appid   := "294100"                       # RimWorld
+vdf_out := "/tmp" / name + ".vdf"
+steam_user := env('STEAM_USER', "")
+changenote := env('CHANGENOTE', "Update from source repo")
+
+# Stage only the files the mod needs at runtime; drop dev/docs cruft.
 rel:
-    rm -rvf /tmp/Greyscythe_Bionics
-    mkdir -vp /tmp/Greyscythe_Bionics
-    cp -rav 1.6 About loadFolders.xml Textures /tmp/Greyscythe_Bionics
+    rm -rvf "{{stage}}"
+    mkdir -vp "{{stage}}"
+    cp -rav 1.6 About loadFolders.xml Textures "{{stage}}"
+    # Strip anything unnecessary for the mod to function.
+    find "{{stage}}" -type f \( \
+        -name '*.pdb' -o -name '*.mdb' -o -name '*.orig' -o -name '*.bak' \
+        -o -name 'README*' -o -name 'desc.txt' -o -name 'justfile' -o -name 'permission*.png' \
+        -o -name '.DS_Store' -o -name 'Thumbs.db' \) -delete
+    @echo "staged -> {{stage}}"
+
+# Emit the steamcmd workshop item descriptor pointing at the staged folder.
+vdf: rel
+    #!/usr/bin/env nu
+    let pubid = (open "{{repo}}/About/PublishedFileId.txt" | str trim)
+    let preview = "{{repo}}/About/preview.png"
+    # VDF quoted strings need backslashes and double-quotes escaped.
+    let desc = (open "{{repo}}/desc.txt" | str replace --all '\' '\\' | str replace --all '"' '\"')
+    let vdf = ([
+        '"workshopitem"'
+        '{'
+        $'    "appid"           "{{appid}}"'
+        $'    "publishedfileid" "($pubid)"'
+        $'    "contentfolder"   "{{stage}}"'
+        $'    "previewfile"     "($preview)"'
+        $'    "changenote"      "{{changenote}}"'
+        $'    "description"     "($desc)"'
+        '}'
+    ] | str join "\n")
+    $vdf | save -f "{{vdf_out}}"
+    print $"wrote {{vdf_out}} for publishedfileid ($pubid)"
+
+# Upload to the Workshop. Requires STEAM_USER and an interactive first login.
+publish: vdf
+    #!/usr/bin/env nu
+    if ("{{steam_user}}" | is-empty) { error make { msg: "set STEAM_USER (e.g. STEAM_USER=me just publish)" } }
+    steamcmd +login "{{steam_user}}" +workshop_build_item "{{vdf_out}}" +quit

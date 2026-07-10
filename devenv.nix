@@ -12,6 +12,7 @@
     git
     dotnetCorePackages.dotnet_9.sdk
     csharpier
+    steamcmd
   ];
 
 }

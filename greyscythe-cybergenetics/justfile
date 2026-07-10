@@ -1,4 +1,63 @@
-rel:
-    rm -rvf /tmp/Greyscythe_Cybergenetics
-    mkdir -vp /tmp/Greyscythe_Cybergenetics
-    cp -rav 1.6 About Languages loadFolders.xml Textures /tmp/Greyscythe_Cybergenetics
+# Release + Steam Workshop publishing for Greyscythe Cybergenetics.
+#
+#   just build      rebuild GS_Core.dll from source
+#   just rel        clean, build, stage shippable folders to {{stage}}
+#   just vdf        write the steamcmd workshop VDF for the staged folder
+#   just publish    stage + upload to the Workshop via steamcmd
+#
+# `publish` needs steamcmd (provided by the devenv shell) and a Steam login.
+# Set STEAM_USER; first run prompts for password + Steam Guard interactively.
+
+repo    := justfile_directory()
+name    := "Greyscythe_Cybergenetics"
+stage   := "/tmp" / name
+appid   := "294100"                       # RimWorld
+csproj  := repo / "Source/GS_Core/GS_Core.csproj"
+vdf_out := "/tmp" / name + ".vdf"
+steam_user := env('STEAM_USER', "")
+changenote := env('CHANGENOTE', "Update from source repo")
+
+# Rebuild the assembly (output lands in 1.6/Assemblies/GS_Core.dll via <OutputPath>).
+build:
+    dotnet build "{{csproj}}" -c Release
+
+# Stage only the files the mod needs at runtime; drop dev/source/docs cruft.
+rel: build
+    rm -rvf "{{stage}}"
+    mkdir -vp "{{stage}}"
+    cp -rav 1.6 About Languages loadFolders.xml Textures "{{stage}}"
+    # Strip anything unnecessary for the mod to function.
+    find "{{stage}}" -type d \( -name Source -o -name bin -o -name obj \) -prune -exec rm -rvf {} +
+    find "{{stage}}" -type f \( \
+        -name '*.pdb' -o -name '*.mdb' -o -name '*.orig' -o -name '*.bak' \
+        -o -name '*.cs' -o -name '*.csproj' -o -name '*.sln' -o -name 'Directory.Build.props' \
+        -o -name 'README*' -o -name 'desc.txt' -o -name 'justfile' -o -name 'permission*.png' \
+        -o -name '.DS_Store' -o -name 'Thumbs.db' \) -delete
+    @echo "staged -> {{stage}}"
+
+# Emit the steamcmd workshop item descriptor pointing at the staged folder.
+vdf: rel
+    #!/usr/bin/env nu
+    let pubid = (open "{{repo}}/About/PublishedFileId.txt" | str trim)
+    let preview = "{{repo}}/About/preview.png"
+    # VDF quoted strings need backslashes and double-quotes escaped.
+    let desc = (open "{{repo}}/desc.txt" | str replace --all '\' '\\' | str replace --all '"' '\"')
+    let vdf = ([
+        '"workshopitem"'
+        '{'
+        $'    "appid"           "{{appid}}"'
+        $'    "publishedfileid" "($pubid)"'
+        $'    "contentfolder"   "{{stage}}"'
+        $'    "previewfile"     "($preview)"'
+        $'    "changenote"      "{{changenote}}"'
+        $'    "description"     "($desc)"'
+        '}'
+    ] | str join "\n")
+    $vdf | save -f "{{vdf_out}}"
+    print $"wrote {{vdf_out}} for publishedfileid ($pubid)"
+
+# Upload to the Workshop. Requires STEAM_USER and an interactive first login.
+publish: vdf
+    #!/usr/bin/env nu
+    if ("{{steam_user}}" | is-empty) { error make { msg: "set STEAM_USER (e.g. STEAM_USER=me just publish)" } }
+    steamcmd +login "{{steam_user}}" +workshop_build_item "{{vdf_out}}" +quit
