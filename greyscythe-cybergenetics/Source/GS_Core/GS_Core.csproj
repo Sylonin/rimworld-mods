@@ -14,11 +14,16 @@
     <OutputPath>..\..\1.6\Assemblies\</OutputPath>
     <ProjectGuid>{2939CD5F-F598-4D85-9FB2-D2EFC3CA94BF}</ProjectGuid>
 
-    <!-- Reproducible builds: no timestamps/random GUIDs, source paths
-         normalized in the PE, invariant restore. -->
+    <!-- Reproducible builds: no timestamps/random GUIDs, normalized source
+         paths. ContinuousIntegrationBuild is deliberately NOT set: it makes
+         the SDK embed the git HEAD SHA into the assembly, so every commit
+         would change the DLL bytes and the committed artifact could never
+         match a fresh build. Disable source-control metadata for the same
+         reason. -->
     <Deterministic>true</Deterministic>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <DeterministicSourcePaths>true</DeterministicSourcePaths>
+    <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>
