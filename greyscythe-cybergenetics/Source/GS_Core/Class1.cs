@@ -1324,9 +1324,11 @@ namespace GS_Core
             }
             catch (Exception arg)
             {
-                Log.Error($"Error in Supreme Melee: {arg}");
+                // Let vanilla damage handling run; returning false would skip armor and shield absorption.
+                Log.ErrorOnce($"GS_Core: error in Patch_Pawn_PreApplyDamage: {arg}", 0x65C0DE18);
+                absorbed = false;
             }
-            return false;
+            return true;
         }
 
         internal static float ComputeEvadeMagnitude(
