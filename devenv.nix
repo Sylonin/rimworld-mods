@@ -10,7 +10,7 @@
 
   packages = with pkgs; [
     git
-    dotnetCorePackages.dotnet_9.sdk
+    dotnetCorePackages.dotnet_10.sdk
     csharpier
     steamcmd
   ];

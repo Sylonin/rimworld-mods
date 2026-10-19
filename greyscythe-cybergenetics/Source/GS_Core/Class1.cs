@@ -7,7 +7,6 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.Sound;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace GS_Core
 {
@@ -1651,7 +1650,7 @@ namespace GS_Core
         }
 
         public static bool Patch_Pawn_PreApplyDamage(
-            ref Pawn __instance,
+            Pawn __instance,
             ref DamageInfo dinfo,
             out bool absorbed
         )

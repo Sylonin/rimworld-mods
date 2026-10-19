@@ -20,15 +20,21 @@ vdf_out := stagedir / name + ".vdf"
 steam_user := env('STEAM_USER', "")
 changenote := env('CHANGENOTE', "Update from source repo")
 
-# Rebuild the assembly (output lands in 1.6/Assemblies/GS_Core.dll via <OutputPath>).
+# Rebuild the 1.7 assembly (output lands in 1.7/Assemblies/GS_Core.dll via <OutputPath>).
+# Needs the .NET 10 SDK. The committed 1.6/Assemblies/GS_Core.dll is frozen: SDK 9 and
+# SDK 10 emit different bytes for the same source, so only rebuild it deliberately.
 build:
-    dotnet build "{{csproj}}" -c Release
+    dotnet build "{{csproj}}" -c Release -p:GameVersion=1.7
+
+# Rebuild the frozen 1.6 assembly (net472, Harmony 2).
+build-1-6:
+    dotnet build "{{csproj}}" -c Release -p:GameVersion=1.6
 
 # Stage only the files the mod needs at runtime; drop dev/source/docs cruft.
 rel: build
     rm -rvf "{{stage}}"
     mkdir -vp "{{stage}}"
-    cp -rav 1.6 About Languages loadFolders.xml Textures "{{stage}}"
+    cp -rav 1.6 1.7 About Languages loadFolders.xml Textures "{{stage}}"
     # Strip anything unnecessary for the mod to function.
     find "{{stage}}" -type d \( -name Source -o -name bin -o -name obj \) -prune -exec rm -rvf {} +
     find "{{stage}}" -type f \( \

@@ -10,7 +10,6 @@
     <OutputType>Library</OutputType>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

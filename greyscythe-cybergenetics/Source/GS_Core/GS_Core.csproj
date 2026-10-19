@@ -2,18 +2,35 @@
 <Project ToolsVersion="15.0">
 
   <PropertyGroup>
-    <BaseIntermediateOutputPath>\tmp\obj\1.6\</BaseIntermediateOutputPath>
-    <MSBUildProjectExtensionsPath>\tmp\obj\1.6\</MSBUildProjectExtensionsPath>
+    <!-- Game version to build for: 1.6 (Unity, net472, Harmony 2) or 1.7 (Waylith,
+         net10.0, Harmony 3). Select with -p:GameVersion=1.6. Must be set before
+         Sdk.props so the per-version intermediate dir is isolated. -->
+    <GameVersion Condition="'$(GameVersion)' == ''">1.7</GameVersion>
+    <BaseIntermediateOutputPath>\tmp\obj\$(GameVersion)\</BaseIntermediateOutputPath>
+    <MSBUildProjectExtensionsPath>\tmp\obj\$(GameVersion)\</MSBUildProjectExtensionsPath>
   </PropertyGroup>
 
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <PropertyGroup>
     <AssemblyName>GS_Core</AssemblyName>
-    <DefineConstants>v1_6</DefineConstants>
-    <OutputPath>..\..\1.6\Assemblies\</OutputPath>
+    <OutputPath>..\..\$(GameVersion)\Assemblies\</OutputPath>
     <ProjectGuid>{2939CD5F-F598-4D85-9FB2-D2EFC3CA94BF}</ProjectGuid>
+  </PropertyGroup>
 
+  <PropertyGroup Condition="'$(GameVersion)' == '1.6'">
+    <TargetFramework>net472</TargetFramework>
+    <DefineConstants>v1_6</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GameVersion)' == '1.7'">
+    <TargetFramework>net10.0</TargetFramework>
+    <DefineConstants>v1_7</DefineConstants>
+    <!-- RimWorld ignores the .deps.json that net10.0 builds emit. -->
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <!-- Reproducible builds: no timestamps/random GUIDs, normalized source
          paths. ContinuousIntegrationBuild is deliberately NOT set: it makes
          the SDK embed the git HEAD SHA into the assembly, so every commit
@@ -26,10 +43,15 @@
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- Pinned exact versions; floating ranges resolve differently over time. -->
+  <!-- Pinned exact versions; floating ranges resolve differently over time. -->
+  <ItemGroup Condition="'$(GameVersion)' == '1.6'">
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4871" />
     <PackageReference Include="Lib.Harmony" Version="2.3.6" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(GameVersion)' == '1.7'">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.7.4982-unstable" />
+    <PackageReference Include="Lib.Harmony" Version="3.0.0-rc.3" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />

@@ -61,11 +61,13 @@ mods-config:
         ludeon.rimworld.anomaly
         ludeon.rimworld.odyssey
     ]
+    # Match the installed game (major.minor), e.g. "1.7.4982 rev1280" -> "1.7".
+    let ver = (open --raw "{{game_dir}}/Version.txt" | str trim | split row "." | first 2 | str join ".")
     let li = {|xs| $xs | each {|m| $"    <li>($m)</li>" } | str join "\n" }
     let xml = ([
         '<?xml version="1.0" encoding="utf-8"?>'
         '<ModsConfigData>'
-        '  <version>1.6</version>'
+        $'  <version>($ver)</version>'
         '  <activeMods>'
         (do $li $active)
         '  </activeMods>'

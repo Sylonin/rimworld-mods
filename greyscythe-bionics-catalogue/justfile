@@ -23,7 +23,7 @@ changenote := env('CHANGENOTE', "Update from source repo")
 rel:
     rm -rvf "{{stage}}"
     mkdir -vp "{{stage}}"
-    cp -rav 1.6 About loadFolders.xml Textures "{{stage}}"
+    cp -rav 1.6 1.7 About loadFolders.xml Textures "{{stage}}"
     # Strip anything unnecessary for the mod to function.
     find "{{stage}}" -type f \( \
         -name '*.pdb' -o -name '*.mdb' -o -name '*.orig' -o -name '*.bak' \
