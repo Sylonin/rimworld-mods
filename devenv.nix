@@ -13,6 +13,11 @@
     dotnetCorePackages.dotnet_10.sdk
     csharpier
     steamcmd
+    just
+    nushell
+    libxml2
+    oxipng
+    steam-run
   ];
 
 }
