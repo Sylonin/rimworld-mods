@@ -27,8 +27,8 @@ active-mod conditions to overlay dirs (the Android-compat patch for cybergenetic
 `1.7/Defs` started as a copy of `1.6/Defs`, so a def fix usually needs applying to both.
 The Android overlay in `1.7/Mods/` is unverified: Vanilla Races Expanded: Android has no 1.7 branch yet.
 
-C# source lives at `greyscythe-cybergenetics/Source/GS_Core/`; all game logic is in the
-single file `Class1.cs` (~1500 lines). The rest is XML defs referencing classes from that
+C# source lives at `greyscythe-cybergenetics/Source/GS_Core/`, split by area into six files
+(~1600 lines in total; see below). The rest is XML defs referencing classes from that
 assembly by name.
 
 ## Build
@@ -71,26 +71,26 @@ cd greyscythe-bionics-catalogue && just rel # → ~/.cache/greyscythe-workshop/G
 - Line endings normalized (dos2unix); PNGs run through oxipng.
 - Commit messages are tagged by area: `[gs-gene]`, `[gs-bionics]`, `[misc]`.
 
-## Class1.cs architecture
+## GS_Core source layout
 
-All in `namespace GS_Core`. Key pieces, grouped:
+All in `namespace GS_Core`. Files and key pieces:
 
-- **`*DefOf` static classes** (`GS_HediffDefOf`, `GS_StatDefOf`, `GS_ThingDefOf`,
-  `GS_EvadeStatDefOf`) link XML def names to code.
-- **Fuel resource system** — `Gene_Fuel : Gene_Resource, IGeneResourceDrain` is the core
-  resource gene; `FuelUtility` holds the shared offset/drain/gizmo helpers;
-  `GeneGizmo_ResourceFuel` draws the bar.
-  `HediffComp_SeverityFromFuel` ties hediff severity to fuel level. Fuel is
-  refilled/consumed via `IngestionOutcomeDoer_OffsetFuel`, `JobGiver_GetFuel`,
-  `Recipe_FuelInjection`, `Workgiver_AdministerFuel` and `WorkGiver_Warden_DeliverFuel`.
-- **Abilities** — all three powers (ChargeBoost, Overdrive, Guardian) use the single
+- **`DefOfs.cs`**: the `*DefOf` static classes (`GS_HediffDefOf`, `GS_StatDefOf`,
+  `GS_ThingDefOf`, `GS_EvadeStatDefOf`) link XML def names to code.
+- **`Fuel.cs`**: the fuel resource. `Gene_Fuel : Gene_Resource, IGeneResourceDrain` is the
+  core resource gene; `FuelUtility` holds the shared offset/drain/gizmo helpers;
+  `GeneGizmo_ResourceFuel` draws the bar; `HediffComp_SeverityFromFuel` ties hediff
+  severity to fuel level; `CompAbilityEffect_FuelCost` gates casting on fuel;
+  `IngestionOutcomeDoer_OffsetFuel` refuels on ingestion.
+- **`FuelJobs.cs`**: refuel jobs. `JobGiver_GetFuel`, `Recipe_FuelInjection`,
+  `Workgiver_AdministerFuel` and `WorkGiver_Warden_DeliverFuel`.
+- **`Abilities.cs`**: all three powers (ChargeBoost, Overdrive, Guardian) use the single
   `Ability_FuelToggleBuff : Ability`, a toggle that applies the matching hediff from
-  `GS_HediffDefOf`. `CompAbilityEffect_FuelCost` gates casting on fuel;
-  `CompAbilityEffect_DeployShield` and `CompAbilityEffect_SelfBomb` are other effects.
-  `CommandAbilityToggle` is the toggle gizmo.
-- **`HarmonyPatches`** (static ctor runs `new Harmony("feaurie.GS_Core")`) — e.g.
-  `Patch_Pawn_PreApplyDamage`.
-- **Mod settings** — `GS_Evade : Mod` + `GS_EvadeModSettings`.
+  `GS_HediffDefOf`; `CommandAbilityToggle` is its gizmo. `CompAbilityEffect_DeployShield`
+  and `CompAbilityEffect_SelfBomb` share AI targeting through `CompAbilityEffect_SelfTargetAI`.
+- **`HarmonyPatches.cs`**: the static ctor runs `new Harmony("feaurie.GS_Core")`;
+  `Patch_Pawn_PreApplyDamage` and `TryEvade` implement evasion.
+- **`Settings.cs`**: `GS_Evade : Mod` and `GS_EvadeModSettings`.
 
 When adding content: define the XML def, reference the C# class by name, rebuild the DLL.
 
