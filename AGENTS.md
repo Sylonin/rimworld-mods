@@ -75,8 +75,8 @@ cd greyscythe-bionics-catalogue && just rel # → ~/.cache/greyscythe-workshop/G
 
 All in `namespace GS_Core`. Key pieces, grouped:
 
-- **`*DefOf` static classes** (`GS_GeneDefOf`, `GS_HediffDefOf`, `GS_StatDefOf`,
-  `GS_ThingDefOf`) — link XML def names to code.
+- **`*DefOf` static classes** (`GS_HediffDefOf`, `GS_StatDefOf`, `GS_ThingDefOf`,
+  `GS_EvadeStatDefOf`) link XML def names to code.
 - **Fuel resource system** — `Gene_Fuel : Gene_Resource, IGeneResourceDrain` is the core
   resource gene; `FuelUtility` holds the shared offset/drain/gizmo helpers;
   `GeneGizmo_ResourceFuel` draws the bar.

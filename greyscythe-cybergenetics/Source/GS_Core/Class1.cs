@@ -104,17 +104,6 @@ namespace GS_Core
     }
 
     [DefOf]
-    public static class GS_GeneDefOf
-    {
-        public static GeneDef GS_Powered;
-
-        static GS_GeneDefOf()
-        {
-            DefOfHelper.EnsureInitializedInCtor(typeof(GS_GeneDefOf));
-        }
-    }
-
-    [DefOf]
     public static class GS_HediffDefOf
     {
         public static HediffDef GS_Powered;
@@ -516,9 +505,9 @@ namespace GS_Core
         {
             get
             {
-                if (cachedFuelGene == null)
+                if (cachedFuelGene == null || cachedFuelGene.pawn != base.Pawn)
                 {
-                    cachedFuelGene = base.Pawn.genes.GetFirstGeneOfType<Gene_Fuel>();
+                    cachedFuelGene = base.Pawn.genes?.GetFirstGeneOfType<Gene_Fuel>();
                 }
                 return cachedFuelGene;
             }
@@ -527,8 +516,13 @@ namespace GS_Core
         public override void CompPostTick(ref float severityAdjustment)
         {
             base.CompPostTick(ref severityAdjustment);
+            Gene_Fuel fuel = Fuel;
+            if (fuel == null)
+            {
+                return;
+            }
             severityAdjustment +=
-                ((Fuel.Value > 0f) ? Props.severityPerHourFuel : Props.severityPerHourEmpty)
+                ((fuel.Value > 0f) ? Props.severityPerHourFuel : Props.severityPerHourEmpty)
                 / 2500f;
         }
     }
@@ -850,7 +844,7 @@ namespace GS_Core
             {
                 return null;
             }
-            if (!(prisoner.genes?.GetGene(GS_GeneDefOf.GS_Powered) is Gene_Fuel gene_Fuel))
+            if (!(prisoner.genes?.GetFirstGeneOfType<Gene_Fuel>() is Gene_Fuel gene_Fuel))
             {
                 return null;
             }
@@ -965,9 +959,9 @@ namespace GS_Core
         {
             get
             {
-                if (cachedGene == null)
+                if (cachedGene == null || cachedGene.pawn != pawn)
                 {
-                    cachedGene = pawn.genes.GetFirstGeneOfType<Gene_Fuel>();
+                    cachedGene = pawn.genes?.GetFirstGeneOfType<Gene_Fuel>();
                 }
                 return cachedGene;
             }
@@ -1022,7 +1016,16 @@ namespace GS_Core
                 }
                 else if (pawn.IsHashIntervalTick(300))
                 {
-                    Gene.Value += -0.02f;
+                    Gene_Fuel fuel = Gene;
+                    if (fuel == null)
+                    {
+                        active = false;
+                        ApplyHediff(new LocalTargetInfo(pawn), LocalTargetInfo.Invalid);
+                    }
+                    else
+                    {
+                        fuel.Value += -0.02f;
+                    }
                 }
             }
         }
@@ -1088,7 +1091,7 @@ namespace GS_Core
         {
             get
             {
-                if (cacheGene == null)
+                if (cacheGene == null || cacheGene.pawn != pawn)
                 {
                     cacheGene = pawn.genes?.GetFirstGeneOfType<Gene_Fuel>();
                 }
@@ -1100,23 +1103,30 @@ namespace GS_Core
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             base.Notify_PawnPostApplyDamage(dinfo, totalDamageDealt);
+            StatDef armorStat = dinfo.Def?.armorCategory?.armorRatingStat;
+            Gene_Fuel fuel = gene;
             if (
-                !dinfo.IgnoreArmor
+                fuel != null
+                && !dinfo.IgnoreArmor
                 && (
-                    dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Blunt
-                    || dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Sharp
+                    armorStat == StatDefOf.ArmorRating_Blunt
+                    || armorStat == StatDefOf.ArmorRating_Sharp
                 )
             )
             {
                 float num = Mathf.Clamp(totalDamageDealt / 5f / 100f, 0.005f, 0.03f);
-                gene.Value -= num;
+                fuel.Value -= num;
             }
         }
 
         public override void Tick()
         {
             base.Tick();
-            Severity = gene.Value;
+            Gene_Fuel fuel = gene;
+            if (fuel != null)
+            {
+                Severity = fuel.Value;
+            }
         }
 
         public override void ExposeData()
