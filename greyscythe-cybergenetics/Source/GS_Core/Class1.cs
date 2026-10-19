@@ -1213,8 +1213,6 @@ namespace GS_Core
     [StaticConstructorOnStartup]
     public static class HarmonyPatches
     {
-        public const float maxEvadeingChance = 0.95f;
-
         static HarmonyPatches()
         {
             Harmony harmony = new Harmony("feaurie.GS_Core");
@@ -1338,12 +1336,12 @@ namespace GS_Core
             }
 
             float magnitude = Mathf.Clamp(
-                Math.Max(statValue, 1f) / attackerSkill,
+                10f / Math.Max(attackerSkill, 1f),
                 GS_EvadeModSettings.Instance.MinEvadeMagnitude,
                 GS_EvadeModSettings.Instance.MaxEvadeMagnitude
             );
             float evadeChance = Math.Min(
-                magnitude * 10f,
+                statValue * magnitude,
                 GS_EvadeModSettings.Instance.maximumEvadeChance
             );
             if (!Rand.Chance(evadeChance))
@@ -1364,7 +1362,7 @@ namespace GS_Core
                 );
                 string moteText = GS_EvadeModSettings.Instance.verboseEvadeReadout
                     ? "GS_Evade_TextMote_Evade".Translate(
-                        $"{evadeChance.ToStringPercent()}={statValue}*{magnitude}={Math.Max(statValue, 1f)}M/{attackerSkill}S "
+                        $"{evadeChance.ToStringPercent()}=min({statValue}*{magnitude}, {GS_EvadeModSettings.Instance.maximumEvadeChance}) (10/{Math.Max(attackerSkill, 1f)}S) "
                     )
                     : "GS_Evade_TextMote_Evade".Translate(evadeChance.ToStringPercent());
                 MoteMaker.ThrowText(pawn.DrawPos, pawn.Map, moteText, 1.9f);
@@ -1402,7 +1400,8 @@ namespace GS_Core
                 "GS_Evade_MaxEvadeChance".Translate(),
                 ref GS_EvadeModSettings.Instance.maximumEvadeChance,
                 ref maxEvadeChanceBuffer,
-                0.01f
+                0.01f,
+                1f
             );
             listing.CheckboxLabeled(
                 "GS_Evade_AnimalSizeScaling".Translate(),
