@@ -17,7 +17,7 @@ repo     := justfile_directory()
 # (e.g. /usr/bin/true), then the Steam Linux Runtime (soldier) supplies the
 # libs the game itself links against.
 run: link mods-config
-    steam-run "{{runtime}}" --verb=waitforexitandrun -- "{{game_dir}}/start_RimWorld.sh"
+    cd "{{game_dir}}" && steam-run "{{runtime}}" --verb=waitforexitandrun -- ./RimWorld
 
 # Symlink the repo's mod folders into the game Mods/ dir, replacing stale symlinks only.
 link:
