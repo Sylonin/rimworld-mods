@@ -23,12 +23,6 @@ namespace GS_Core
                 return;
             }
             Pawn_GeneTracker genes = pawn.genes;
-            Gene_FuelDrainMod gene_FuelDrainMod = genes?.GetFirstGeneOfType<Gene_FuelDrainMod>();
-            if (gene_FuelDrainMod != null)
-            {
-                OffsetResource(gene_FuelDrainMod, offset);
-                return;
-            }
             Gene_Fuel gene_Fuel = genes?.GetFirstGeneOfType<Gene_Fuel>();
             if (gene_Fuel != null)
             {
@@ -106,15 +100,6 @@ namespace GS_Core
                     },
                 };
             }
-        }
-    }
-
-    [StaticConstructorOnStartup]
-    public static class GS_Genes
-    {
-        static GS_Genes()
-        {
-            Log.Message("Greyscythe Industries - Genetics Module");
         }
     }
 
@@ -267,23 +252,7 @@ namespace GS_Core
     {
         public bool FuelAllowed = true;
 
-        public float FuelLevel = 0f;
-
-        private string cachedFuelLabel = null;
-
         public Gene_Resource Resource => this;
-
-        public override string ResourceLabel
-        {
-            get
-            {
-                if (cachedFuelLabel == null)
-                {
-                    cachedFuelLabel = def.resourceLabel + " (Level: " + FuelLevel + ")";
-                }
-                return cachedFuelLabel;
-            }
-        }
 
         public Pawn Pawn => pawn;
 
@@ -341,56 +310,6 @@ namespace GS_Core
         {
             base.ExposeData();
             Scribe_Values.Look(ref FuelAllowed, "FuelAllowed", defaultValue: true);
-            Scribe_Values.Look(ref FuelLevel, "FuelLevel", 0f);
-        }
-
-        public void OffsetFuelLevel(int offset)
-        {
-            FuelLevel += offset;
-            SetMax(1f + FuelLevel / 10f);
-            cachedFuelLabel = null;
-        }
-    }
-
-    public class Gene_FuelDrainMod : Gene, IGeneResourceDrain
-    {
-        [Unsaved(false)]
-        private Gene_Fuel cachedFuelGene;
-
-        private const float MinAgeForDrain = 3f;
-
-        public Gene_Resource Resource
-        {
-            get
-            {
-                if (cachedFuelGene == null)
-                {
-                    cachedFuelGene = pawn.genes.GetFirstGeneOfType<Gene_Fuel>();
-                }
-                return cachedFuelGene;
-            }
-        }
-
-        public bool CanOffset => !pawn.Deathresting;
-
-        public float ResourceLossPerDay => def.resourceLossPerDay;
-
-        public Pawn Pawn => pawn;
-
-        public string DisplayLabel => Label + " (" + "Gene".Translate() + ")";
-
-        public override void Tick()
-        {
-            base.Tick();
-            FuelUtility.TickResourceDrain(this);
-        }
-
-        public override IEnumerable<Gizmo> GetGizmos()
-        {
-            foreach (Gizmo resourceDrainGizmo in FuelUtility.GetResourceDrainGizmos(this))
-            {
-                yield return resourceDrainGizmo;
-            }
         }
     }
 
@@ -1030,10 +949,7 @@ namespace GS_Core
         }
     }
 
-    //
-    //  **Charge Boost Ability**
-    //
-    public class Ability_ChargeBoost : Ability
+    public class Ability_FuelToggleBuff : Ability
     {
         public bool active;
 
@@ -1051,46 +967,34 @@ namespace GS_Core
             }
         }
 
-        public Ability_ChargeBoost(Pawn pawn)
+        public Ability_FuelToggleBuff(Pawn pawn)
             : base(pawn) { }
 
-        public Ability_ChargeBoost(Pawn pawn, AbilityDef def)
+        public Ability_FuelToggleBuff(Pawn pawn, AbilityDef def)
             : base(pawn, def)
         {
             base.def = def;
             base.pawn = pawn;
         }
 
+        public CompProperties_AbilityFuelBuff BuffProps =>
+            def.comps?.OfType<CompProperties_AbilityFuelBuff>().FirstOrDefault();
+
         public override IEnumerable<Command> GetGizmos()
         {
-            if (active)
+            CompProperties_AbilityFuelBuff buff = BuffProps;
+            string onKey = buff?.labelOnKey ?? "FuelBuff_On";
+            string offKey = buff?.labelOffKey ?? "FuelBuff_Off";
+            yield return new CommandAbilityToggle(pawn, this)
             {
-                yield return new CommandAbilityToggle(pawn, this)
+                defaultLabel = (active ? offKey : onKey).Translate(),
+                toggleAction = delegate
                 {
-                    defaultLabel = "ChargeBoost_Off".Translate(),
-                    toggleAction = delegate
-                    {
-                        active = false;
-                        Activate(pawn, LocalTargetInfo.Invalid);
-                    },
-                    isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_ChargeBoost"),
-                };
-            }
-            else
-            {
-                yield return new CommandAbilityToggle(pawn, this)
-                {
-                    defaultLabel = "ChargeBoost_On".Translate(),
-                    toggleAction = delegate
-                    {
-                        active = true;
-                        Activate(pawn, LocalTargetInfo.Invalid);
-                    },
-                    isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_ChargeBoost"),
-                };
-            }
+                    active = !active;
+                    Activate(pawn, LocalTargetInfo.Invalid);
+                },
+                isActive = () => active,
+            };
         }
 
         public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest)
@@ -1112,6 +1016,7 @@ namespace GS_Core
                 if (pawn.Downed)
                 {
                     active = false;
+                    ApplyHediff(new LocalTargetInfo(pawn), LocalTargetInfo.Invalid);
                 }
                 else if (pawn.IsHashIntervalTick(300))
                 {
@@ -1120,41 +1025,60 @@ namespace GS_Core
             }
         }
 
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref active, "active", false);
+        }
+
         public void ApplyHediff(LocalTargetInfo target, LocalTargetInfo dest)
         {
-            if (!(target.Thing is Pawn pawn))
+            Pawn targetPawn = target.Thing as Pawn ?? pawn;
+            CompProperties_AbilityFuelBuff buff = BuffProps;
+            if (buff?.buffHediff == null)
             {
                 return;
             }
             if (active)
             {
-                Hediff_ChargeBoost hediff_ChargeBoost =
-                    HediffMaker.MakeHediff(GS_HediffDefOf.GS_ChargeBoostHediff, pawn)
-                    as Hediff_ChargeBoost;
-                hediff_ChargeBoost.ability = this;
-                hediff_ChargeBoost.gene = Gene;
-                pawn.health.AddHediff(hediff_ChargeBoost);
+                Hediff_FuelBuff buffHediff =
+                    HediffMaker.MakeHediff(buff.buffHediff, targetPawn) as Hediff_FuelBuff;
+                buffHediff.ability = this;
+                targetPawn.health.AddHediff(buffHediff);
             }
             else
             {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(
-                    GS_HediffDefOf.GS_ChargeBoostHediff
-                );
-                if (firstHediffOfDef != null)
+                Hediff existing = targetPawn.health.hediffSet.GetFirstHediffOfDef(buff.buffHediff);
+                if (existing != null)
                 {
-                    pawn.health.RemoveHediff(firstHediffOfDef);
+                    targetPawn.health.RemoveHediff(existing);
                 }
             }
         }
     }
 
-    public class Hediff_ChargeBoost : HediffWithComps
+    public class CompProperties_AbilityFuelBuff : CompProperties_AbilityEffect
     {
-        public Ability_ChargeBoost ability;
+        public HediffDef buffHediff;
+
+        public string labelOnKey = "FuelBuff_On";
+
+        public string labelOffKey = "FuelBuff_Off";
+
+        public CompProperties_AbilityFuelBuff()
+        {
+            compClass = typeof(Ability_FuelToggleBuff);
+        }
+    }
+
+    public class Hediff_FuelBuff : HediffWithComps
+    {
+        public Ability_FuelToggleBuff ability;
 
         private Gene_Fuel cacheGene;
 
-        public override bool ShouldRemove => gene.Value <= 0f || !ability.active;
+        public override bool ShouldRemove =>
+            gene == null || gene.Value <= 0f || ability == null || !ability.active;
 
         public override bool Visible => true;
 
@@ -1192,343 +1116,11 @@ namespace GS_Core
             base.Tick();
             Severity = gene.Value;
         }
-    }
 
-    //
-    //  **Overdrive Ability**
-    //
-    public class Ability_Overdrive : Ability
-    {
-        public bool active;
-
-        private Gene_Fuel cachedGene;
-
-        public Gene_Fuel Gene
+        public override void ExposeData()
         {
-            get
-            {
-                if (cachedGene == null)
-                {
-                    cachedGene = pawn.genes.GetFirstGeneOfType<Gene_Fuel>();
-                }
-                return cachedGene;
-            }
-        }
-
-        public Ability_Overdrive(Pawn pawn)
-            : base(pawn) { }
-
-        public Ability_Overdrive(Pawn pawn, AbilityDef def)
-            : base(pawn, def)
-        {
-            base.def = def;
-            base.pawn = pawn;
-        }
-
-        public override IEnumerable<Command> GetGizmos()
-        {
-            if (active)
-            {
-                yield return new CommandAbilityToggle(pawn, this)
-                {
-                    defaultLabel = "Overdrive_Off".Translate(),
-                    toggleAction = delegate
-                    {
-                        active = false;
-                        Activate(pawn, LocalTargetInfo.Invalid);
-                    },
-                    isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Overdrive"),
-                };
-            }
-            else
-            {
-                yield return new CommandAbilityToggle(pawn, this)
-                {
-                    defaultLabel = "Overdrive_On".Translate(),
-                    toggleAction = delegate
-                    {
-                        active = true;
-                        Activate(pawn, LocalTargetInfo.Invalid);
-                    },
-                    isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Overdrive"),
-                };
-            }
-        }
-
-        public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest)
-        {
-            bool result = base.Activate(target, dest);
-            ApplyHediff(target, dest);
-            if (active)
-            {
-                StartCooldown(300);
-            }
-            return result;
-        }
-
-        public override void AbilityTick()
-        {
-            base.AbilityTick();
-            if (active)
-            {
-                if (pawn.Downed)
-                {
-                    active = false;
-                }
-                else if (pawn.IsHashIntervalTick(300))
-                {
-                    Gene.Value += -0.02f;
-                }
-            }
-        }
-
-        public void ApplyHediff(LocalTargetInfo target, LocalTargetInfo dest)
-        {
-            if (!(target.Thing is Pawn pawn))
-            {
-                return;
-            }
-            if (active)
-            {
-                Hediff_Overdrive hediff_Overdrive =
-                    HediffMaker.MakeHediff(GS_HediffDefOf.GS_OverdriveHediff, pawn)
-                    as Hediff_Overdrive;
-                hediff_Overdrive.ability = this;
-                hediff_Overdrive.gene = Gene;
-                pawn.health.AddHediff(hediff_Overdrive);
-            }
-            else
-            {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(
-                    GS_HediffDefOf.GS_OverdriveHediff
-                );
-                if (firstHediffOfDef != null)
-                {
-                    pawn.health.RemoveHediff(firstHediffOfDef);
-                }
-            }
-        }
-
-        public Boolean isActive()
-        {
-            return active;
-        }
-    }
-
-    public class Hediff_Overdrive : HediffWithComps
-    {
-        public Ability_Overdrive ability;
-
-        private Gene_Fuel cacheGene;
-
-        public override bool ShouldRemove => gene.Value <= 0f || !ability.active;
-
-        public override bool Visible => true;
-
-        public Gene_Fuel gene
-        {
-            get
-            {
-                if (cacheGene == null)
-                {
-                    cacheGene = pawn.genes?.GetFirstGeneOfType<Gene_Fuel>();
-                }
-                return cacheGene;
-            }
-            set { cacheGene = value; }
-        }
-
-        public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
-        {
-            base.Notify_PawnPostApplyDamage(dinfo, totalDamageDealt);
-            if (
-                !dinfo.IgnoreArmor
-                && (
-                    dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Blunt
-                    || dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Sharp
-                )
-            )
-            {
-                float num = Mathf.Clamp(totalDamageDealt / 5f / 100f, 0.005f, 0.03f);
-                gene.Value -= num;
-            }
-        }
-
-        public override void Tick()
-        {
-            base.Tick();
-            Severity = gene.Value;
-        }
-    }
-
-    //
-    //  **Guardian Ability**
-    //
-    public class Ability_Guardian : Ability
-    {
-        public bool active;
-
-        private Gene_Fuel cachedGene;
-
-        public Gene_Fuel Gene
-        {
-            get
-            {
-                if (cachedGene == null)
-                {
-                    cachedGene = pawn.genes.GetFirstGeneOfType<Gene_Fuel>();
-                }
-                return cachedGene;
-            }
-        }
-
-        public Ability_Guardian(Pawn pawn)
-            : base(pawn) { }
-
-        public Ability_Guardian(Pawn pawn, AbilityDef def)
-            : base(pawn, def)
-        {
-            base.def = def;
-            base.pawn = pawn;
-        }
-
-        public override IEnumerable<Command> GetGizmos()
-        {
-            if (active)
-            {
-                yield return new CommandAbilityToggle(pawn, this)
-                {
-                    defaultLabel = "Guardian_Off".Translate(),
-                    toggleAction = delegate
-                    {
-                        active = false;
-                        Activate(pawn, LocalTargetInfo.Invalid);
-                    },
-                    isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Guardian"),
-                };
-            }
-            else
-            {
-                yield return new CommandAbilityToggle(pawn, this)
-                {
-                    defaultLabel = "Guardian_On".Translate(),
-                    toggleAction = delegate
-                    {
-                        active = true;
-                        Activate(pawn, LocalTargetInfo.Invalid);
-                    },
-                    isActive = () => active,
-                    icon = ContentFinder<Texture2D>.Get("UI/Abilities/GS_Powered_Guardian"),
-                };
-            }
-        }
-
-        public override bool Activate(LocalTargetInfo target, LocalTargetInfo dest)
-        {
-            bool result = base.Activate(target, dest);
-            ApplyHediff(target, dest);
-            if (active)
-            {
-                StartCooldown(300);
-            }
-            return result;
-        }
-
-        public override void AbilityTick()
-        {
-            base.AbilityTick();
-            if (active)
-            {
-                if (pawn.Downed)
-                {
-                    active = false;
-                }
-                else if (pawn.IsHashIntervalTick(300))
-                {
-                    Gene.Value += -0.02f;
-                }
-            }
-        }
-
-        public void ApplyHediff(LocalTargetInfo target, LocalTargetInfo dest)
-        {
-            if (!(target.Thing is Pawn pawn))
-            {
-                return;
-            }
-            if (active)
-            {
-                Hediff_Guardian hediff_Guardian =
-                    HediffMaker.MakeHediff(GS_HediffDefOf.GS_GuardianHediff, pawn)
-                    as Hediff_Guardian;
-                hediff_Guardian.ability = this;
-                hediff_Guardian.gene = Gene;
-                pawn.health.AddHediff(hediff_Guardian);
-            }
-            else
-            {
-                Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(
-                    GS_HediffDefOf.GS_GuardianHediff
-                );
-                if (firstHediffOfDef != null)
-                {
-                    pawn.health.RemoveHediff(firstHediffOfDef);
-                }
-            }
-        }
-
-        public Boolean isActive()
-        {
-            return active;
-        }
-    }
-
-    public class Hediff_Guardian : HediffWithComps
-    {
-        public Ability_Guardian ability;
-
-        private Gene_Fuel cacheGene;
-
-        public override bool ShouldRemove => gene.Value <= 0f || !ability.active;
-
-        public override bool Visible => true;
-
-        public Gene_Fuel gene
-        {
-            get
-            {
-                if (cacheGene == null)
-                {
-                    cacheGene = pawn.genes?.GetFirstGeneOfType<Gene_Fuel>();
-                }
-                return cacheGene;
-            }
-            set { cacheGene = value; }
-        }
-
-        public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
-        {
-            base.Notify_PawnPostApplyDamage(dinfo, totalDamageDealt);
-            if (
-                !dinfo.IgnoreArmor
-                && (
-                    dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Blunt
-                    || dinfo.Def.armorCategory.armorRatingStat == StatDefOf.ArmorRating_Sharp
-                )
-            )
-            {
-                float num = Mathf.Clamp(totalDamageDealt / 5f / 100f, 0.005f, 0.03f);
-                gene.Value -= num;
-            }
-        }
-
-        public override void Tick()
-        {
-            base.Tick();
-            Severity = gene.Value;
+            base.ExposeData();
+            Scribe_References.Look(ref ability, "ability");
         }
     }
 
@@ -1600,22 +1192,6 @@ namespace GS_Core
             base.Apply(target, dest);
         }
 
-        /**
-
-        public override IEnumerable<PreCastAction> GetPreCastActions()
-        {
-            yield return new PreCastAction
-            {
-                action = delegate
-                {
-                    parent.AddEffecterToMaintain(EffecterDefOf.Fire_Burst.Spawn(parent.pawn.Position, parent.pawn.Map), parent.pawn.Position, 17, parent.pawn.Map);
-                },
-                ticksAwayFromCast = 17
-            };
-        }
-
-        **/
-
         public override bool AICanTargetNow(LocalTargetInfo target)
         {
             if (Pawn.Faction == Faction.OfPlayer)
@@ -1684,164 +1260,54 @@ namespace GS_Core
                     ThingDef weapon = dinfo.Weapon;
                     if (weapon == null || !weapon.IsMeleeWeapon)
                     {
-                        weapon = dinfo.Weapon;
                         if (weapon == null || !weapon.IsRangedWeapon)
                         {
                             return true;
                         }
 
-                        if (
-                            GS_EvadeStatDefOf.GS_Evade_EvadeProjectileChance.Worker.IsDisabledFor(
-                                pawn
-                            )
-                        )
+                        float attackerSkill = 10f;
+                        if (dinfo.Instigator is Pawn { skills: not null } shooter)
                         {
-                            return true;
+                            attackerSkill =
+                                shooter.skills.GetSkill(SkillDefOf.Shooting)?.Level ?? 0;
                         }
-
-                        float statValue = pawn.GetStatValue(
-                            GS_EvadeStatDefOf.GS_Evade_EvadeProjectileChance
+                        return !TryEvade(
+                            pawn,
+                            GS_EvadeStatDefOf.GS_Evade_EvadeProjectileChance,
+                            attackerSkill,
+                            SoundDefOf.BulletImpact_Ground,
+                            FleckDefOf.AirPuff,
+                            dinfo,
+                            ref absorbed
                         );
-                        if (!(statValue > 0f))
-                        {
-                            return true;
-                        }
-
-                        // val / num is the chance to hit
-                        float numStat = Math.Max(statValue, 1f);
-                        float num = 10f;
-                        if (dinfo.Instigator is Pawn { skills: not null } pawn2)
-                        {
-                            num = pawn2.skills.GetSkill(SkillDefOf.Shooting)?.Level ?? 0;
-                        }
-                        float num2 = Mathf.Clamp(
-                            (float)numStat / num,
-                            GS_EvadeModSettings.Instance.MinEvadeMagnitude,
-                            GS_EvadeModSettings.Instance.MaxEvadeMagnitude
-                        );
-                        float num3 = Math.Min(
-                            num2 * 10f,
-                            GS_EvadeModSettings.Instance.maximumEvadeChance
-                        );
-                        if (!Rand.Chance(num3))
-                        {
-                            return true;
-                        }
-
-                        if (pawn.Map != null)
-                        {
-                            SoundDefOf.BulletImpact_Ground?.PlayOneShot(
-                                new TargetInfo(pawn.Position, pawn.Map)
-                            );
-                            FleckMaker.Static(
-                                pawn.TrueCenter()
-                                    + Vector3Utility
-                                        .HorizontalVectorFromAngle(dinfo.Angle)
-                                        .RotatedBy(180f) * 0.5f,
-                                scale: Mathf.Min(10f, 2f + dinfo.Amount / 10f),
-                                map: pawn.Map,
-                                fleckDef: FleckDefOf.AirPuff
-                            );
-                            if (GS_EvadeModSettings.Instance.verboseEvadeReadout)
-                            {
-                                MoteMaker.ThrowText(
-                                    pawn.DrawPos,
-                                    pawn.Map,
-                                    "GS_Evade_TextMote_Evade".Translate(
-                                        $"{num3.ToStringPercent()}={statValue}*{num2}={numStat}M/{num}S "
-                                    ),
-                                    3.9f
-                                );
-                            }
-                            else
-                            {
-                                MoteMaker.ThrowText(
-                                    pawn.DrawPos,
-                                    pawn.Map,
-                                    "GS_Evade_TextMote_Evade".Translate(num3.ToStringPercent()),
-                                    1.9f
-                                );
-                            }
-                        }
-
-                        absorbed = true;
-                        return false;
                     }
                 }
 
-                if (GS_EvadeStatDefOf.GS_Evade_EvadeMeleeChance.Worker.IsDisabledFor(pawn))
+                float meleeSkill = 10f;
+                if (dinfo.Instigator is Pawn attacker)
                 {
-                    return true;
-                }
-
-                float statValue2 = pawn.GetStatValue(GS_EvadeStatDefOf.GS_Evade_EvadeMeleeChance);
-                if (!(statValue2 > 0f))
-                {
-                    return true;
-                }
-
-                float num4 = Math.Max(statValue2, 1f);
-                float num5 = 10f;
-                if (dinfo.Instigator is Pawn pawn3)
-                {
-                    if (pawn3.skills == null)
+                    if (attacker.skills == null)
                     {
                         if (GS_EvadeModSettings.Instance.animalSizeScaling)
                         {
-                            float num6 = pawn3.BodySize / pawn.BodySize;
-                            num5 = Mathf.Clamp(10f * num6, 10f, 25f);
+                            float sizeRatio = attacker.BodySize / pawn.BodySize;
+                            meleeSkill = Mathf.Clamp(10f * sizeRatio, 10f, 25f);
                         }
                     }
                     else
                     {
-                        num5 = pawn3.skills.GetSkill(SkillDefOf.Melee)?.Level ?? 0;
+                        meleeSkill = attacker.skills.GetSkill(SkillDefOf.Melee)?.Level ?? 0;
                     }
                 }
-                float num7 = Mathf.Clamp(
-                    num4 / num5,
-                    GS_EvadeModSettings.Instance.MinEvadeMagnitude,
-                    GS_EvadeModSettings.Instance.MaxEvadeMagnitude
+                return !TryEvade(
+                    pawn,
+                    GS_EvadeStatDefOf.GS_Evade_EvadeMeleeChance,
+                    meleeSkill,
+                    SoundDefOf.Crunch,
+                    FleckDefOf.ExplosionFlash,
+                    dinfo,
+                    ref absorbed
                 );
-                float num8 = Math.Min(num4 * 10f, GS_EvadeModSettings.Instance.maximumEvadeChance);
-                if (!Rand.Chance(num8))
-                {
-                    return true;
-                }
-
-                if (pawn.Map != null)
-                {
-                    SoundDefOf.Crunch?.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
-                    FleckMaker.Static(
-                        pawn.TrueCenter()
-                            + Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle).RotatedBy(180f)
-                                * 0.5f,
-                        scale: Mathf.Min(10f, 2f + dinfo.Amount / 10f),
-                        map: pawn.Map,
-                        fleckDef: FleckDefOf.ExplosionFlash
-                    );
-                    if (GS_EvadeModSettings.Instance.verboseEvadeReadout)
-                    {
-                        MoteMaker.ThrowText(
-                            pawn.DrawPos,
-                            pawn.Map,
-                            "GS_Evade_TextMote_Evade".Translate(
-                                $"{num8.ToStringPercent()}={statValue2}*{num7}={num4}M/{num5}M "
-                            ),
-                            3.9f
-                        );
-                    }
-                    else
-                    {
-                        MoteMaker.ThrowText(
-                            pawn.DrawPos,
-                            pawn.Map,
-                            "GS_Evade_TextMote_Evade".Translate(num8.ToStringPercent()),
-                            1.9f
-                        );
-                    }
-                }
-                absorbed = true;
-                return false;
             }
             catch (Exception arg)
             {
@@ -1849,17 +1315,63 @@ namespace GS_Core
             }
             return false;
         }
-    }
 
-    public static class MathUtils
-    {
-        public static float TwoWayScale(float first, float second)
+        private static bool TryEvade(
+            Pawn pawn,
+            StatDef evadeStat,
+            float attackerSkill,
+            SoundDef evadeSound,
+            FleckDef evadeFleck,
+            DamageInfo dinfo,
+            ref bool absorbed
+        )
         {
-            if (second > first)
+            if (evadeStat.Worker.IsDisabledFor(pawn))
             {
-                return first / second;
+                return false;
             }
-            return second / first;
+
+            float statValue = pawn.GetStatValue(evadeStat);
+            if (!(statValue > 0f))
+            {
+                return false;
+            }
+
+            float magnitude = Mathf.Clamp(
+                Math.Max(statValue, 1f) / attackerSkill,
+                GS_EvadeModSettings.Instance.MinEvadeMagnitude,
+                GS_EvadeModSettings.Instance.MaxEvadeMagnitude
+            );
+            float evadeChance = Math.Min(
+                magnitude * 10f,
+                GS_EvadeModSettings.Instance.maximumEvadeChance
+            );
+            if (!Rand.Chance(evadeChance))
+            {
+                return false;
+            }
+
+            if (pawn.Map != null)
+            {
+                evadeSound?.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
+                FleckMaker.Static(
+                    pawn.TrueCenter()
+                        + Vector3Utility.HorizontalVectorFromAngle(dinfo.Angle).RotatedBy(180f)
+                            * 0.5f,
+                    scale: Mathf.Min(10f, 2f + dinfo.Amount / 10f),
+                    map: pawn.Map,
+                    fleckDef: evadeFleck
+                );
+                string moteText = GS_EvadeModSettings.Instance.verboseEvadeReadout
+                    ? "GS_Evade_TextMote_Evade".Translate(
+                        $"{evadeChance.ToStringPercent()}={statValue}*{magnitude}={Math.Max(statValue, 1f)}M/{attackerSkill}S "
+                    )
+                    : "GS_Evade_TextMote_Evade".Translate(evadeChance.ToStringPercent());
+                MoteMaker.ThrowText(pawn.DrawPos, pawn.Map, moteText, 1.9f);
+            }
+
+            absorbed = true;
+            return true;
         }
     }
 
@@ -1884,18 +1396,23 @@ namespace GS_Core
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            int num = 0;
-            float rowHeight = 48f;
-            Rect inRect2 = new Rect(inRect);
-            Rect rowRect = UIHelper.GetRowRect(inRect2, rowHeight, num);
-            num++;
-            Widgets.TextFieldNumericLabeled(
-                UIHelper.GetRowRect(inRect2, rowHeight, num),
+            Listing_Standard listing = new Listing_Standard();
+            listing.Begin(inRect);
+            listing.TextFieldNumericLabeled(
                 "GS_Evade_MaxEvadeChance".Translate(),
                 ref GS_EvadeModSettings.Instance.maximumEvadeChance,
                 ref maxEvadeChanceBuffer,
                 0.01f
             );
+            listing.CheckboxLabeled(
+                "GS_Evade_AnimalSizeScaling".Translate(),
+                ref GS_EvadeModSettings.Instance.animalSizeScaling
+            );
+            listing.CheckboxLabeled(
+                "GS_Evade_VerboseEvadeReadout".Translate(),
+                ref GS_EvadeModSettings.Instance.verboseEvadeReadout
+            );
+            listing.End();
         }
     }
 
@@ -1933,88 +1450,7 @@ namespace GS_Core
             Scribe_Values.Look(ref verboseEvadeReadout, "verboseEvadeReadout", defaultValue: false);
             Scribe_Values.Look(ref maximumEvadeChance, "maximumEvadeChance", 0.9f);
             Scribe_Values.Look(ref animalSizeScaling, "animalSizeScaling", defaultValue: true);
-        }
-    }
-
-    public static class UIHelper
-    {
-        public static Rect GetRowRect(Rect inRect, float rowHeight, int row)
-        {
-            float y = inRect.y + rowHeight * (float)row;
-            return new Rect(inRect.x, y, inRect.width, rowHeight);
-        }
-    }
-
-    //
-    // **Visual Mote system**
-    //
-    public class EffectMote : Mote
-    {
-        public override float Alpha => 0.4f;
-
-        protected override bool EndOfLife => false;
-    }
-
-    public class CompProperties_EffectMote : HediffCompProperties
-    {
-        public float size = 1f;
-
-        public ThingDef visualMote;
-
-        public CompProperties_EffectMote()
-        {
-            compClass = typeof(CompEffectMote);
-        }
-    }
-
-    public class CompEffectMote : HediffComp
-    {
-        private EffectMote mote;
-
-        public CompProperties_EffectMote Props => (CompProperties_EffectMote)props;
-
-        public override void CompPostTick(ref float severityAdjustment)
-        {
-            CreateOrMoveMote(base.Pawn.TrueCenter());
-        }
-
-        public void CreateOrMoveMote(Vector3 pawnPos)
-        {
-            if (mote == null)
-            {
-                mote = (EffectMote)ThingMaker.MakeThing(Props.visualMote);
-                mote.Scale = 1.9f * Props.size;
-                mote.exactPosition = pawnPos;
-                GenSpawn.Spawn(mote, pawnPos.ToIntVec3(), base.Pawn.Map);
-            }
-            else
-            {
-                mote.exactPosition = pawnPos;
-            }
-        }
-
-        public override void Notify_PawnDied(DamageInfo? dinfo, Hediff culprit = null)
-        {
-            ClearMote();
-        }
-
-        public override void Notify_PawnKilled()
-        {
-            ClearMote();
-        }
-
-        public override void CompPostPostRemoved()
-        {
-            ClearMote();
-        }
-
-        private void ClearMote()
-        {
-            if (mote != null && mote.Spawned)
-            {
-                mote.DeSpawn();
-            }
-            mote = null;
+            Scribe_Values.Look(ref EvadeMagnitude, "EvadeMagnitude", 2f);
         }
     }
 
@@ -2057,21 +1493,6 @@ namespace GS_Core
             );
         }
 
-        /**
-
-        public override IEnumerable<PreCastAction> GetPreCastActions()
-        {
-            yield return new PreCastAction
-            {
-                action = delegate
-                {
-                    parent.AddEffecterToMaintain(EffecterDefOf.Fire_Burst.Spawn(parent.pawn.Position, parent.pawn.Map), parent.pawn.Position, 17, parent.pawn.Map);
-                },
-                ticksAwayFromCast = 17
-            };
-        }
-
-        **/
         private static void SpawnEffect(Thing projector)
         {
             FleckMaker.Static(
@@ -2095,70 +1516,6 @@ namespace GS_Core
                 return pawn.TargetCurrentlyAimingAt == Pawn;
             }
             return false;
-        }
-    }
-
-    /**
-     * Implants into bionics
-     */
-
-    public class GS_Recipe_InstallImplant : Recipe_Surgery
-    {
-        public override IEnumerable<BodyPartRecord> GetPartsToApplyOn(Pawn pawn, RecipeDef recipe)
-        {
-            return MedicalRecipesUtility.GetFixedPartsToApplyOn(
-                recipe,
-                pawn,
-                delegate(BodyPartRecord record)
-                {
-                    IEnumerable<Hediff> source = pawn.health.hediffSet.hediffs.Where(
-                        (Hediff x) => x.Part == record
-                    );
-                    if (typeof(Hediff_AddedPart).IsAssignableFrom(recipe.addsHediff.hediffClass))
-                    {
-                        if (source.Count() == 1 && source.First().def == recipe.addsHediff)
-                        {
-                            return false;
-                        }
-                    }
-                    else if (source.Any((Hediff hd) => hd.def == recipe.addsHediff))
-                    {
-                        return false;
-                    }
-                    if (
-                        record.parent != null
-                        && !pawn.health.hediffSet.GetNotMissingParts().Contains(record.parent)
-                    )
-                    {
-                        return false;
-                    }
-                    return (
-                        !pawn.health.hediffSet.PartOrAnyAncestorHasDirectlyAddedParts(record)
-                        || pawn.health.hediffSet.HasDirectlyAddedPartFor(record)
-                    )
-                        ? true
-                        : false;
-                }
-            );
-        }
-
-        public override void ApplyOnPawn(
-            Pawn pawn,
-            BodyPartRecord part,
-            Pawn billDoer,
-            List<Thing> ingredients,
-            Bill bill
-        )
-        {
-            if (billDoer != null)
-            {
-                if (CheckSurgeryFail(billDoer, pawn, ingredients, part, bill))
-                {
-                    return;
-                }
-                TaleRecorder.RecordTale(TaleDefOf.DidSurgery, billDoer, pawn);
-            }
-            pawn.health.AddHediff(recipe.addsHediff, part);
         }
     }
 }

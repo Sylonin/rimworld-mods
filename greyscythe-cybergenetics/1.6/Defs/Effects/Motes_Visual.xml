@@ -2,7 +2,7 @@
 <Defs>
   <ThingDef ParentName="MoteBase">
     <defName>Mote_ChargeBoost</defName>
-    <thingClass>GS_Core.EffectMote</thingClass>
+    <thingClass>Mote</thingClass>
     <altitudeLayer>MoteOverhead</altitudeLayer>
     <mote/>
     <graphicData>
@@ -12,7 +12,7 @@
   </ThingDef>
   <ThingDef ParentName="MoteBase">
     <defName>Mote_Overdrive</defName>
-    <thingClass>GS_Core.EffectMote</thingClass>
+    <thingClass>Mote</thingClass>
     <altitudeLayer>MoteOverhead</altitudeLayer>
     <mote/>
     <graphicData>
@@ -22,7 +22,7 @@
   </ThingDef>
   <ThingDef ParentName="MoteBase">
     <defName>Mote_Guardian</defName>
-    <thingClass>GS_Core.EffectMote</thingClass>
+    <thingClass>Mote</thingClass>
     <altitudeLayer>MoteOverhead</altitudeLayer>
     <mote/>
     <graphicData>

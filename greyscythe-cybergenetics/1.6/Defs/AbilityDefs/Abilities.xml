@@ -27,35 +27,56 @@
   <AbilityDef ParentName="GS_SelfTargetAbilities">
     <defName>GS_ChargeBoostA</defName>
     <label>Synaptic Accelerator</label>
-    <abilityClass>GS_Core.Ability_ChargeBoost</abilityClass>
+    <abilityClass>GS_Core.Ability_FuelToggleBuff</abilityClass>
     <description>Drains fuel to boost movement and reaction speed.</description>
     <iconPath>UI/Icons/Genes/GS_Powered_Charge</iconPath>
     <cooldownTicksRange>300</cooldownTicksRange>
     <hostile>false</hostile>
     <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
     <displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
+    <comps>
+      <li Class="GS_Core.CompProperties_AbilityFuelBuff">
+        <buffHediff>GS_ChargeBoostHediff</buffHediff>
+        <labelOnKey>ChargeBoost_On</labelOnKey>
+        <labelOffKey>ChargeBoost_Off</labelOffKey>
+      </li>
+    </comps>
   </AbilityDef>
   <AbilityDef ParentName="GS_SelfTargetAbilities">
     <defName>GS_OverdriveA</defName>
     <label>Cybernetic Overcharge</label>
-    <abilityClass>GS_Core.Ability_Overdrive</abilityClass>
+    <abilityClass>GS_Core.Ability_FuelToggleBuff</abilityClass>
     <description>Drains fuel to increase weapon power and effectiveness.</description>
     <iconPath>UI/Icons/Genes/GS_Powered_Overdrive</iconPath>
     <cooldownTicksRange>300</cooldownTicksRange>
     <hostile>false</hostile>
     <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
     <displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
+    <comps>
+      <li Class="GS_Core.CompProperties_AbilityFuelBuff">
+        <buffHediff>GS_OverdriveHediff</buffHediff>
+        <labelOnKey>Overdrive_On</labelOnKey>
+        <labelOffKey>Overdrive_Off</labelOffKey>
+      </li>
+    </comps>
   </AbilityDef>
   <AbilityDef ParentName="GS_SelfTargetAbilities">
     <defName>GS_GuardianA</defName>
     <label>Guardian Protocols</label>
-    <abilityClass>GS_Core.Ability_Guardian</abilityClass>
+    <abilityClass>GS_Core.Ability_FuelToggleBuff</abilityClass>
     <description>Drains fuel to activate advanced defensive suite.</description>
     <iconPath>UI/Icons/Genes/GS_Powered_Guardian</iconPath>
     <cooldownTicksRange>300</cooldownTicksRange>
     <hostile>false</hostile>
     <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
     <displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
+    <comps>
+      <li Class="GS_Core.CompProperties_AbilityFuelBuff">
+        <buffHediff>GS_GuardianHediff</buffHediff>
+        <labelOnKey>Guardian_On</labelOnKey>
+        <labelOffKey>Guardian_Off</labelOffKey>
+      </li>
+    </comps>
   </AbilityDef>
   <AbilityDef ParentName="GS_SelfTargetAbilities">
     <defName>GS_Powered_PlasmaVentA</defName>
