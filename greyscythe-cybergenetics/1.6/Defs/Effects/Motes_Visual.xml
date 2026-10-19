@@ -2,7 +2,7 @@
 <Defs>
   <ThingDef ParentName="MoteBase">
     <defName>Mote_ChargeBoost</defName>
-    <thingClass>Mote</thingClass>
+    <thingClass>MoteAttached</thingClass>
     <altitudeLayer>MoteOverhead</altitudeLayer>
     <mote/>
     <graphicData>
@@ -12,7 +12,7 @@
   </ThingDef>
   <ThingDef ParentName="MoteBase">
     <defName>Mote_Overdrive</defName>
-    <thingClass>Mote</thingClass>
+    <thingClass>MoteAttached</thingClass>
     <altitudeLayer>MoteOverhead</altitudeLayer>
     <mote/>
     <graphicData>
@@ -22,7 +22,7 @@
   </ThingDef>
   <ThingDef ParentName="MoteBase">
     <defName>Mote_Guardian</defName>
-    <thingClass>Mote</thingClass>
+    <thingClass>MoteAttached</thingClass>
     <altitudeLayer>MoteOverhead</altitudeLayer>
     <mote/>
     <graphicData>
