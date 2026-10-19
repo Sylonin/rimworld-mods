@@ -147,6 +147,7 @@ namespace GS_Core
     {
         public static ThingDef GS_Fuel;
 
+        [MayRequire("feaurie.GreyscytheBionics")]
         public static ThingDef GS_ShieldProjector;
 
         static GS_ThingDefOf()
@@ -1158,11 +1159,27 @@ namespace GS_Core
         }
     }
 
-    public class CompAbilityEffect_SelfBomb : CompAbilityEffect
+    public abstract class CompAbilityEffect_SelfTargetAI : CompAbilityEffect
+    {
+        protected Pawn Pawn => parent.pawn;
+
+        public override bool AICanTargetNow(LocalTargetInfo target)
+        {
+            if (Pawn.Faction == Faction.OfPlayer)
+            {
+                return false;
+            }
+            if (target.HasThing && target.Thing is Pawn pawn)
+            {
+                return pawn.TargetCurrentlyAimingAt == Pawn;
+            }
+            return false;
+        }
+    }
+
+    public class CompAbilityEffect_SelfBomb : CompAbilityEffect_SelfTargetAI
     {
         private new CompProperties_AbilitySelfBomb Props => (CompProperties_AbilitySelfBomb)props;
-
-        private Pawn Pawn => parent.pawn;
 
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
@@ -1191,19 +1208,6 @@ namespace GS_Core
                 ignoredThings: list
             );
             base.Apply(target, dest);
-        }
-
-        public override bool AICanTargetNow(LocalTargetInfo target)
-        {
-            if (Pawn.Faction == Faction.OfPlayer)
-            {
-                return false;
-            }
-            if (target.HasThing && target.Thing is Pawn pawn)
-            {
-                return pawn.TargetCurrentlyAimingAt == Pawn;
-            }
-            return false;
         }
     }
 
@@ -1486,30 +1490,43 @@ namespace GS_Core
         }
     }
 
-    public class CompAbilityEffect_DeployShield : CompAbilityEffect
+    public class CompAbilityEffect_DeployShield : CompAbilityEffect_SelfTargetAI
     {
         private new CompProperties_AbilityShield Props => (CompProperties_AbilityShield)props;
 
-        private Pawn Pawn => parent.pawn;
-
         public override void Apply(LocalTargetInfo target, LocalTargetInfo dest)
         {
+            base.Apply(target, dest);
             Map map = Pawn.Map;
+            if (map == null)
+            {
+                return;
+            }
+            int spawned = 0;
             int num = GenRadial.NumCellsInRadius(Props.radius);
             for (int i = 0; i < num; i++)
             {
                 IntVec3 intVec = Pawn.Position + GenRadial.RadialPattern[i];
-                if (intVec.IsValid && intVec.InBounds(map))
+                if (
+                    intVec.IsValid
+                    && intVec.InBounds(map)
+                    && intVec.Walkable(map)
+                    && intVec.GetFirstThing(map, GS_ThingDefOf.GS_ShieldProjector) == null
+                )
                 {
                     SpawnEffect(GenSpawn.Spawn(GS_ThingDefOf.GS_ShieldProjector, intVec, map));
+                    spawned++;
                 }
             }
-            Messages.Message(
-                "AbilityNotEnoughFreeSpace".Translate(),
-                Pawn,
-                MessageTypeDefOf.RejectInput,
-                historical: false
-            );
+            if (spawned == 0)
+            {
+                Messages.Message(
+                    "AbilityNotEnoughFreeSpace".Translate(),
+                    Pawn,
+                    MessageTypeDefOf.RejectInput,
+                    historical: false
+                );
+            }
         }
 
         private static void SpawnEffect(Thing projector)
@@ -1522,19 +1539,6 @@ namespace GS_Core
             SoundDefOf.Broadshield_Startup.PlayOneShot(
                 new TargetInfo(projector.Position, projector.Map)
             );
-        }
-
-        public override bool AICanTargetNow(LocalTargetInfo target)
-        {
-            if (Pawn.Faction == Faction.OfPlayer)
-            {
-                return false;
-            }
-            if (target.HasThing && target.Thing is Pawn pawn)
-            {
-                return pawn.TargetCurrentlyAimingAt == Pawn;
-            }
-            return false;
         }
     }
 }
