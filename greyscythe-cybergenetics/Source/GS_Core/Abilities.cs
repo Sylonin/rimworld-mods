@@ -75,12 +75,12 @@ namespace GS_Core
         public Ability_FuelToggleBuff(Pawn pawn, AbilityDef def)
             : base(pawn, def) { }
 
-        public CompProperties_AbilityFuelBuff BuffProps =>
-            def.comps?.OfType<CompProperties_AbilityFuelBuff>().FirstOrDefault();
+        public AbilityFuelBuffExtension BuffProps =>
+            def.GetModExtension<AbilityFuelBuffExtension>();
 
         public override IEnumerable<Command> GetGizmos()
         {
-            CompProperties_AbilityFuelBuff buff = BuffProps;
+            AbilityFuelBuffExtension buff = BuffProps;
             string onKey = buff?.labelOnKey ?? "FuelBuff_On";
             string offKey = buff?.labelOffKey ?? "FuelBuff_Off";
             yield return new CommandAbilityToggle(pawn, this)
@@ -141,7 +141,7 @@ namespace GS_Core
         public void ApplyHediff(LocalTargetInfo target, LocalTargetInfo dest)
         {
             Pawn targetPawn = target.Thing as Pawn ?? pawn;
-            CompProperties_AbilityFuelBuff buff = BuffProps;
+            AbilityFuelBuffExtension buff = BuffProps;
             if (buff?.buffHediff == null)
             {
                 return;
@@ -164,18 +164,13 @@ namespace GS_Core
         }
     }
 
-    public class CompProperties_AbilityFuelBuff : CompProperties_AbilityEffect
+    public class AbilityFuelBuffExtension : DefModExtension
     {
         public HediffDef buffHediff;
 
         public string labelOnKey = "FuelBuff_On";
 
         public string labelOffKey = "FuelBuff_Off";
-
-        public CompProperties_AbilityFuelBuff()
-        {
-            compClass = typeof(CompAbilityEffect);
-        }
     }
 
     public class Hediff_FuelBuff : HediffWithComps

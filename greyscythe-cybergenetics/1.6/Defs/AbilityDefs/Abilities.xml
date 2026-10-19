@@ -34,13 +34,13 @@
     <hostile>false</hostile>
     <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
     <displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
-    <comps>
-      <li Class="GS_Core.CompProperties_AbilityFuelBuff">
+    <modExtensions>
+      <li Class="GS_Core.AbilityFuelBuffExtension">
         <buffHediff>GS_ChargeBoostHediff</buffHediff>
         <labelOnKey>ChargeBoost_On</labelOnKey>
         <labelOffKey>ChargeBoost_Off</labelOffKey>
       </li>
-    </comps>
+    </modExtensions>
   </AbilityDef>
   <AbilityDef ParentName="GS_SelfTargetAbilities">
     <defName>GS_OverdriveA</defName>
@@ -52,13 +52,13 @@
     <hostile>false</hostile>
     <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
     <displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
-    <comps>
-      <li Class="GS_Core.CompProperties_AbilityFuelBuff">
+    <modExtensions>
+      <li Class="GS_Core.AbilityFuelBuffExtension">
         <buffHediff>GS_OverdriveHediff</buffHediff>
         <labelOnKey>Overdrive_On</labelOnKey>
         <labelOffKey>Overdrive_Off</labelOffKey>
       </li>
-    </comps>
+    </modExtensions>
   </AbilityDef>
   <AbilityDef ParentName="GS_SelfTargetAbilities">
     <defName>GS_GuardianA</defName>
@@ -70,13 +70,13 @@
     <hostile>false</hostile>
     <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
     <displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
-    <comps>
-      <li Class="GS_Core.CompProperties_AbilityFuelBuff">
+    <modExtensions>
+      <li Class="GS_Core.AbilityFuelBuffExtension">
         <buffHediff>GS_GuardianHediff</buffHediff>
         <labelOnKey>Guardian_On</labelOnKey>
         <labelOffKey>Guardian_Off</labelOffKey>
       </li>
-    </comps>
+    </modExtensions>
   </AbilityDef>
   <AbilityDef ParentName="GS_SelfTargetAbilities">
     <defName>GS_Powered_PlasmaVentA</defName>
