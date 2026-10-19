@@ -4,7 +4,9 @@
     <defName>Mote_ChargeBoost</defName>
     <thingClass>MoteAttached</thingClass>
     <altitudeLayer>MoteOverhead</altitudeLayer>
-    <mote/>
+    <mote>
+      <solidTime>99999</solidTime>
+    </mote>
     <graphicData>
       <texPath>Things/Mote/Mote_ChargeBoost</texPath>
       <shaderType>MoteGlow</shaderType>
@@ -14,7 +16,9 @@
     <defName>Mote_Overdrive</defName>
     <thingClass>MoteAttached</thingClass>
     <altitudeLayer>MoteOverhead</altitudeLayer>
-    <mote/>
+    <mote>
+      <solidTime>99999</solidTime>
+    </mote>
     <graphicData>
       <texPath>Things/Mote/Mote_Overdrive</texPath>
       <shaderType>MoteGlow</shaderType>
@@ -24,7 +28,9 @@
     <defName>Mote_Guardian</defName>
     <thingClass>MoteAttached</thingClass>
     <altitudeLayer>MoteOverhead</altitudeLayer>
-    <mote/>
+    <mote>
+      <solidTime>99999</solidTime>
+    </mote>
     <graphicData>
       <texPath>Things/Mote/Mote_Guardian</texPath>
       <shaderType>MoteGlow</shaderType>
