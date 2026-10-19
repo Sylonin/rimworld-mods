@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <RecipeDef Name="GS_SurgeryInstallImplantBase" ParentName="SurgeryFlesh" Abstract="True">
-    <workerClass>GS_Core.GS_Recipe_InstallImplant</workerClass>
+    <workerClass>Recipe_InstallImplant</workerClass>
     <workAmount>2500</workAmount>
     <developmentalStageFilter>Child, Adult</developmentalStageFilter>
     <skillRequirements>
