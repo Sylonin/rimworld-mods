@@ -19,7 +19,7 @@ repo     := justfile_directory()
 run: link mods-config
     steam-run "{{runtime}}" --verb=waitforexitandrun -- "{{game_dir}}/start_RimWorld.sh"
 
-# Symlink the repo's mod folders into the game Mods/ dir, clearing stale copies.
+# Symlink the repo's mod folders into the game Mods/ dir, replacing stale symlinks only.
 link:
     #!/usr/bin/env nu
     let mods_dir = "{{game_dir}}/Mods"
@@ -30,7 +30,11 @@ link:
     }
     for src in ($links | columns) {
         let dst = ($mods_dir | path join ($links | get $src))
-        if ($dst | path exists) { rm -rf $dst }
+        match ($dst | path type) {
+            "symlink" => { rm $dst }
+            null | "" => {}
+            _ => { error make { msg: $"($dst) exists and is not a symlink; remove or move it manually" } }
+        }
         ln -s ("{{repo}}" | path join $src) $dst
         print $"linked ($dst)"
     }
@@ -39,7 +43,9 @@ link:
 mods-config:
     #!/usr/bin/env nu
     let cfg = "{{config}}"
-    if ($cfg | path exists) { cp $cfg $"($cfg).bak" }
+    # Keep the first backup: later runs would overwrite the user's original with a generated one.
+    let bak = $"($cfg).bak"
+    if ($cfg | path exists) and not ($bak | path exists) { cp $cfg $bak }
     let active = [
         brrainz.harmony
         ludeon.rimworld
