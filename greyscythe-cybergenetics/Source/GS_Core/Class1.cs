@@ -268,7 +268,7 @@ namespace GS_Core
 
         public override float MaxLevelOffset => 0.1f;
 
-        protected override Color BarColor => new ColorInt(2000, 200, 10).ToColor;
+        protected override Color BarColor => new ColorInt(255, 200, 10).ToColor;
 
         protected override Color BarHighlightColor => new ColorInt(255, 255, 122).ToColor;
 
@@ -622,6 +622,15 @@ namespace GS_Core
             return 9.1f;
         }
 
+        internal static int ComputeFuelPackCount(int stackCount, float missingFuel, float fuelGain)
+        {
+            if (!(fuelGain > 0f))
+            {
+                return 0;
+            }
+            return Mathf.Min(stackCount, Mathf.FloorToInt(missingFuel / fuelGain));
+        }
+
         protected override Job TryGiveJob(Pawn pawn)
         {
             if (!ModsConfig.BiotechActive)
@@ -642,11 +651,17 @@ namespace GS_Core
                 Thing FuelPack = GetFuelPack(pawn);
                 if (FuelPack != null)
                 {
-                    Job job = JobMaker.MakeJob(JobDefOf.Ingest, FuelPack);
-                    job.count = Mathf.Min(
+                    int count = ComputeFuelPackCount(
                         FuelPack.stackCount,
-                        Mathf.FloorToInt((gene_Fuel.Max - gene_Fuel.Value) / FuelPackFuelGain)
+                        gene_Fuel.Max - gene_Fuel.Value,
+                        FuelPackFuelGain
                     );
+                    if (count <= 0)
+                    {
+                        return null;
+                    }
+                    Job job = JobMaker.MakeJob(JobDefOf.Ingest, FuelPack);
+                    job.count = count;
                     return job;
                 }
             }
@@ -681,11 +696,6 @@ namespace GS_Core
 
     public class Recipe_FuelInjection : Recipe_Surgery
     {
-        public override bool CompletableEver(Pawn surgeryTarget)
-        {
-            return base.CompletableEver(surgeryTarget);
-        }
-
         public override bool AvailableOnNow(Thing thing, BodyPartRecord part = null)
         {
             return thing.MapHeld != null
@@ -723,11 +733,6 @@ namespace GS_Core
             {
                 ingredients[j].Destroy();
             }
-        }
-
-        public override float GetIngredientCount(IngredientCount ing, Bill bill)
-        {
-            return base.GetIngredientCount(ing, bill);
         }
     }
 
@@ -971,11 +976,7 @@ namespace GS_Core
             : base(pawn) { }
 
         public Ability_FuelToggleBuff(Pawn pawn, AbilityDef def)
-            : base(pawn, def)
-        {
-            base.def = def;
-            base.pawn = pawn;
-        }
+            : base(pawn, def) { }
 
         public CompProperties_AbilityFuelBuff BuffProps =>
             def.comps?.OfType<CompProperties_AbilityFuelBuff>().FirstOrDefault();
@@ -1067,7 +1068,7 @@ namespace GS_Core
 
         public CompProperties_AbilityFuelBuff()
         {
-            compClass = typeof(Ability_FuelToggleBuff);
+            compClass = typeof(CompAbilityEffect);
         }
     }
 
@@ -1314,6 +1315,24 @@ namespace GS_Core
             return false;
         }
 
+        internal static float ComputeEvadeMagnitude(
+            float attackerSkill,
+            float minMagnitude,
+            float maxMagnitude
+        )
+        {
+            return Mathf.Clamp(10f / Math.Max(attackerSkill, 1f), minMagnitude, maxMagnitude);
+        }
+
+        internal static float ComputeEvadeChance(
+            float statValue,
+            float magnitude,
+            float maximumChance
+        )
+        {
+            return Math.Min(statValue * magnitude, maximumChance);
+        }
+
         private static bool TryEvade(
             Pawn pawn,
             StatDef evadeStat,
@@ -1335,13 +1354,14 @@ namespace GS_Core
                 return false;
             }
 
-            float magnitude = Mathf.Clamp(
-                10f / Math.Max(attackerSkill, 1f),
+            float magnitude = ComputeEvadeMagnitude(
+                attackerSkill,
                 GS_EvadeModSettings.Instance.MinEvadeMagnitude,
                 GS_EvadeModSettings.Instance.MaxEvadeMagnitude
             );
-            float evadeChance = Math.Min(
-                statValue * magnitude,
+            float evadeChance = ComputeEvadeChance(
+                statValue,
+                magnitude,
                 GS_EvadeModSettings.Instance.maximumEvadeChance
             );
             if (!Rand.Chance(evadeChance))
