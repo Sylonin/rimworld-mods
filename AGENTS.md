@@ -27,7 +27,7 @@ active-mod conditions to overlay dirs (the Android-compat patch for cybergenetic
 `1.7/Defs` started as a copy of `1.6/Defs`, so a def fix usually needs applying to both.
 The Android overlay in `1.7/Mods/` is unverified: Vanilla Races Expanded: Android has no 1.7 branch yet.
 
-C# source lives at `greyscythe-cybergenetics/Source/GS_Core/`, split by area into six files
+C# source lives at `greyscythe-cybergenetics/Source/GS_Core/`, split by area into files
 (~1600 lines in total; see below). The rest is XML defs referencing classes from that
 assembly by name.
 
@@ -91,6 +91,10 @@ All in `namespace GS_Core`. Files and key pieces:
 - **`HarmonyPatches.cs`**: the static ctor runs `new Harmony("feaurie.GS_Core")`;
   `Patch_Pawn_PreApplyDamage` and `TryEvade` implement evasion.
 - **`Settings.cs`**: `GS_Evade : Mod` and `GS_EvadeModSettings`.
+- **`Recipes.cs`**: `GS_Recipe_InstallImplant`, the worker of `GS_SurgeryInstallImplantBase` in
+  the bionics catalogue. Vanilla `Recipe_InstallImplant` refuses parts that are themselves bionic,
+  so GS implants could not go onto bionic ears, eyes or limbs. The frozen 1.6 DLL has the original
+  class of the same name, so the 1.6 and 1.7 XML stay identical.
 
 When adding content: define the XML def, reference the C# class by name, rebuild the DLL.
 
