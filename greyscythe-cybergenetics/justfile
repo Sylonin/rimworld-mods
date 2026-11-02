@@ -46,9 +46,10 @@ vdf: rel
     #!/usr/bin/env nu
     let pubid = (open "{{repo}}/About/PublishedFileId.txt" | str trim)
     let preview = "{{repo}}/About/preview.png"
-    # VDF quoted strings need backslashes and double-quotes escaped.
-    let desc = (open "{{repo}}/desc.txt" | str replace --all '\' '\\' | str replace --all '"' '\"')
-    let changenote = ($env.CHANGENOTE? | default "Update from source repo" | str replace --all '\' '\\' | str replace --all '"' '\"')
+    # steamcmd's VDF parser has no escapes: a backslash is literal and a double quote always
+    # ends the value, so double quotes become single quotes.
+    let desc = (open "{{repo}}/desc.txt" | str replace --all '"' "'")
+    let changenote = ($env.CHANGENOTE? | default "Update from source repo" | str replace --all '"' "'")
     let vdf = ([
         '"workshopitem"'
         '{'
