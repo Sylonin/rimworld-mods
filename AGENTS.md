@@ -25,6 +25,10 @@ active-mod conditions to overlay dirs (the Android-compat patch for cybergenetic
 
 `1.6/` is frozen: don't edit it for 1.7 work. 1.7 is the Waylith engine (.NET 10, Harmony 3);
 `1.7/Defs` started as a copy of `1.6/Defs`, so a def fix usually needs applying to both.
+1.6 XML may only name `GS_Core` classes that exist in the frozen 1.6 DLL. That DLL predates the
+October 2026 refactor: it has `Ability_ChargeBoost`/`Overdrive`/`Guardian`, their `Hediff_*`
+classes and `EffectMote`, not `Ability_FuelToggleBuff`, `Hediff_FuelBuff` or
+`AbilityFuelBuffExtension`. Copying the refactored defs into `1.6/` broke 1.6 loading.
 The Android overlay in `1.7/Mods/` is unverified: Vanilla Races Expanded: Android has no 1.7 branch yet.
 
 C# source lives at `greyscythe-cybergenetics/Source/GS_Core/`, split by area into files
