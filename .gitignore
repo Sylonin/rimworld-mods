@@ -7,3 +7,13 @@ devenv.local.nix
 
 # pre-commit
 .pre-commit-config.yaml
+
+# Claude Code / omp-improve
+.claude/
+.improve/
+
+# RimWorld-generated texture cache
+greyscythe-*/Assets.zip
+greyscythe-*/Assets.zip.fingerprint
+greyscythe-*/Assets.zip.roles
+greyscythe-*/Assets.zip.stamps
